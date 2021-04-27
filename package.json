@@ -1,0 +1,6 @@
+{
+  "name": "quiet.js",
+  "version": "0.0.1",
+  "description": "Emscripten build of quiet.js",
+  "main": "index.js"
+}

@@ -52,7 +52,7 @@ jobs:
         mkdir -p ${HOME}/opt
         git clone https://github.com/quiet/quiet.git
         cd quiet
-        git apply ~/quiet-js/tools/quiet.patch
+        git apply ../quiet-js/tools/quiet.patch
         mkdir -p build_js
         cd build_js
         emcmake cmake .. -DCMAKE_INSTALL_PREFIX:PATH=${HOME}/opt

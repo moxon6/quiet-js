@@ -15,7 +15,6 @@ const createF32Array = (bufferSize, quietInterop) => {
 
 export default class Transmitter {
   constructor(audioContext, quietInterop) {
-    // prevent races with callbacks on this.destroyed in-flight objects
     this.destroyed = false;
     this.audioContext = audioContext;
     this.quietInterop = quietInterop;

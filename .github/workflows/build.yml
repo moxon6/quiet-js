@@ -16,3 +16,13 @@ jobs:
         emconfigure ./configure --prefix=${HOME}/opt
         make
         make install
+    
+    - name: "Build libfec wasm"
+      run: |
+        mkdir -p ${HOME}/opt
+        git clone https://github.com/quiet/libfec.git
+        cd libfec
+        emconfigure ./configure --prefix=${HOME}/opt
+        sed -i 's/ldconfig//g' makefile
+        make
+        make install

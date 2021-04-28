@@ -1,5 +1,5 @@
 source ~/dev/emsdk/emsdk_env.sh
-cd quiet-dsp
+cd dependencies/quiet-dsp
 
 export EMCC_CFLAGS="-I${HOME}/opt/include -DLIBFEC_ENABLED=1"
 

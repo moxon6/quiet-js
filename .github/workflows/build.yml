@@ -26,3 +26,13 @@ jobs:
         sed -i 's/ldconfig//g' makefile
         make
         make install
+
+    - name: "Build quiet-dsp wasm"
+      run: |
+        mkdir -p ${HOME}/opt
+        git clone https://github.com/quiet/quiet-dsp.git
+        cd quiet-dsp
+        emconfigure ./configure --prefix=${HOME}/opt
+        sed -i 's/ldconfig//g' makefile
+        make
+        make install

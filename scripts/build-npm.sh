@@ -1,8 +1,8 @@
 source ~/dev/emsdk/emsdk_env.sh
 
 em++ \
-    -I/home/martin/opt/include \
-    -L/home/martin/opt/lib \
+    -I${HOME}/opt/include \
+    -L${HOME}/opt/lib \
     -lquiet \
     -lliquid \
     -ljansson \

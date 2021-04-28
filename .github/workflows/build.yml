@@ -31,8 +31,8 @@ jobs:
       run: |
         mkdir -p ${HOME}/opt
         git clone https://github.com/quiet/quiet-dsp.git
-        git checkout devel
         cd quiet-dsp
+        git checkout devel
         export EMCC_CFLAGS="-I${HOME}/opt/include -DLIBFEC_ENABLED=1"
         aclocal
         autoconf

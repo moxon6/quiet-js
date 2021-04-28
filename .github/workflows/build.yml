@@ -62,6 +62,7 @@ jobs:
     - name: "Build wasm for package"
       run: |
         em++ \
+          -O2 \
           -I${HOME}/opt/include \
           -L${HOME}/opt/lib \
           -lquiet \
@@ -76,4 +77,3 @@ jobs:
           -s EXPORTED_RUNTIME_METHODS='["ccall","cwrap", "intArrayFromString"]'
 
         cp ${HOME}/opt/share/quiet/quiet-profiles.json quiet-js
-        find quiet-js

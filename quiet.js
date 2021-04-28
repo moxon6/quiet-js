@@ -11,7 +11,7 @@ export default class Quiet {
   transmit({ payload, ...opts }) {
     const profile = this.profiles[opts.profile];
     new Transmitter(this.audioContext, this.interop)
-      .selectProfile(profile)
+      .selectProfile(profile, opts.clampFrame)
       .transmit(payload)
       .destroy();
   }

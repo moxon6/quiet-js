@@ -21,7 +21,7 @@ export default class Transmitter {
     this.quietInterop = quietInterop;
   }
 
-  selectProfile(profile) {
+  selectProfile(profile, clampFrame) {
     const cProfiles = this.quietInterop.intArrayFromString(JSON.stringify({ profile }));
     const cProfile = this.quietInterop.intArrayFromString('profile');
     const opt = this.quietInterop.quietEncoderProfileStr(cProfiles, cProfile);
@@ -35,7 +35,9 @@ export default class Transmitter {
     // sample buffers. this is very convenient if our system is not fast enough
     // to feed the sound card without any gaps between subsequent buffers due
     // to e.g. gc pause. inform quiet about our sample buffer size here
-    this.frameLength = this.quietInterop.quietEncoderClampFrameLen(this.encoder, sampleBufferSize);
+    this.frameLength = clampFrame 
+      ? this.quietInterop.quietEncoderClampFrameLen(this.encoder, sampleBufferSize)
+      : this.quietInterop.quietEncoderGetFrameLen(this.encoder);
 
     this.samples = createF32Array(sampleBufferSize, this.quietInterop);
     return this;

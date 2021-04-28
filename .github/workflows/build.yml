@@ -77,3 +77,9 @@ jobs:
           -s EXPORTED_RUNTIME_METHODS='["ccall","cwrap", "intArrayFromString"]'
 
         cp ${HOME}/opt/share/quiet/quiet-profiles.json quiet-js
+    
+    - name: "Publish to npm"
+      uses: JS-DevTools/npm-publish@v1
+      with:
+        package: "./quiet-js/package.json"
+        token: ${{ secrets.NPM_TOKEN }}

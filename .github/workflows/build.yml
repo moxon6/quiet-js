@@ -48,14 +48,8 @@ jobs:
         git clone https://github.com/quiet/quiet.git
         cd quiet
 
-        script_path=`dirname $BASH_SOURCE`
-        build_path="$script_path/build_js"
+        mkdir -p build_js
 
-        if [ ! -d "$build_path" ]; then
-            mkdir "$build_path"
-        fi
-
-        cd "$build_path"
-        # Todo: Investigate
+        cd build_js
         emcmake cmake .. -DCMAKE_INSTALL_PREFIX:PATH=${HOME}/opt
         emmake make

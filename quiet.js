@@ -2,16 +2,14 @@ import Transmitter from './transmitter.js';
 import createQuietInterop from './interop.js';
 
 export default class Quiet {
-  constructor(profiles, audioContext, module) {
-    this.profiles = profiles;
+  constructor(audioContext, module) {
     this.audioContext = audioContext;
     this.interop = createQuietInterop(module);
   }
 
-  transmit({ payload, ...opts }) {
-    const profile = this.profiles[opts.profile];
+  transmit({ payload, profile, clampFrame }) {
     new Transmitter(this.audioContext, this.interop)
-      .selectProfile(profile, opts.clampFrame)
+      .selectProfile(profile, clampFrame)
       .transmit(payload)
       .destroy();
   }

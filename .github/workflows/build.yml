@@ -36,3 +36,14 @@ jobs:
         sed -i 's/ldconfig//g' makefile
         make
         make install
+    
+    - name: "Build quiet wasm"
+      run: |
+        mkdir -p ${HOME}/opt
+        git clone https://github.com/quiet/quiet.git
+        cd quiet
+        mkdir build_js
+        cd build_js
+        emcmake cmake .. -DCMAKE_INSTALL_PREFIX:PATH=${HOME}/opt
+        emmake make
+        emmake make install

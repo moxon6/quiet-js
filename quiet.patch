@@ -1,0 +1,46 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 9aab588..9823cea 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -52,23 +52,16 @@ else()
+   set(SRCFILES ${SRCFILES} src/ring.c)
+ endif()
+ 
+-find_path(liquid_include NAMES liquid/liquid.h)
+-find_library(liquid_library NAMES liquid)
++
++
++set(liquid_include "$ENV{HOME}/opt/include/liquid")
++set(liquid_library "$ENV{HOME}/opt/lib")
++
+ find_package_handle_standard_args(Liquid DEFAULT_MSG liquid_library liquid_include)
+ mark_as_advanced(liquid_include liquid_library)
+ if(LIQUID_FOUND)
+     add_library(liquid UNKNOWN IMPORTED)
+     set_target_properties(liquid PROPERTIES IMPORTED_LOCATION "${liquid_library}" INTERFACE_INCLUDE_DIRECTORIES "${liquid_include}")
+-    check_library_exists(liquid flexframesync_set_header_len,flexframegen_set_header_len,ofdmflexframesync_set_header_len,ofdmflexframegen_set_header_len,resamp_rrrf_execute_output_block,liquid_pack_array_block "" LIQUID_DEVEL_FUNCTIONS)
+-    if(NOT LIQUID_DEVEL_FUNCTIONS)
+-      unset(LIQUID_FOUND CACHE)
+-        message(FATAL_ERROR "
+-libquiet requires the devel branch of libliquid but
+-  found a different branch installed
+-fetch the devel branch using
+-    git clone https://github.com/quiet/liquid-dsp.git -b devel --single-branch
+-and install it before continuing")
+-    endif()
+ else()
+     message(FATAL_ERROR "
+ libquiet requires libliquid but cannot find it
+@@ -77,8 +70,10 @@ fetch the devel branch using
+ and install it before continuing")
+ endif()
+ 
+-find_path(jansson_include NAMES jansson.h)
+-find_library(jansson_library NAMES jansson)
++
++set(jansson_include "$ENV{HOME}/opt/include")
++set(jansson_library "$ENV{HOME}/opt/lib")
++
+ find_package_handle_standard_args(Jansson DEFAULT_MSG jansson_library jansson_include)
+ mark_as_advanced(jansson_include jansson_library)
+ if(JANSSON_FOUND)

@@ -32,7 +32,9 @@ jobs:
         mkdir -p ${HOME}/opt
         git clone https://github.com/quiet/quiet-dsp.git
         cd quiet-dsp
-        pwd
+        aclocal
+        autoconf
+        autoheader
         export EMCC_CFLAGS="-I${HOME}/opt/include -DLIBFEC_ENABLED=1"
         emconfigure ./configure --prefix=${HOME}/opt
         sed -i 's/ldconfig//g' makefile

@@ -42,25 +42,27 @@ export default class Transmitter {
     return this;
   }
 
-  transmit(buf) {
+  async transmit(buf) {
     resumeIfSuspended(this.audioContext);
 
     const payload = chunkBuffer(buf, this.frameLength);
 
+    let t = this.audioContext.currentTime;
     for (const frame of payload) {
+      const audioBuffer = this
+        .audioContext
+        .createBuffer(1, sampleBufferSize, this.audioContext.sampleRate);
       this.quietInterop.quietEncoderSend(this.encoder, new Uint8Array(frame), frame.byteLength);
+      this.quietInterop.quietEncoderEmit(this.encoder, this.samples.pointer, sampleBufferSize);
+      audioBuffer.copyToChannel(this.samples.view, 0, 0);
+  
+      const audioBufferNode = new AudioBufferSourceNode(this.audioContext);
+      audioBufferNode.buffer = audioBuffer;
+      audioBufferNode.connect(this.audioContext.destination);
+      audioBufferNode.start(t);
+      t += audioBuffer.duration;
     }
-    this.quietInterop.quietEncoderEmit(this.encoder, this.samples.pointer, sampleBufferSize);
 
-    const audioBuffer = this
-      .audioContext
-      .createBuffer(1, sampleBufferSize, this.audioContext.sampleRate);
-    audioBuffer.copyToChannel(this.samples.view, 0, 0);
-
-    const audioBufferNode = new AudioBufferSourceNode(this.audioContext);
-    audioBufferNode.buffer = audioBuffer;
-    audioBufferNode.connect(this.audioContext.destination);
-    audioBufferNode.start();
     return this;
   }
 

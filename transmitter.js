@@ -1,5 +1,7 @@
-import { resumeIfSuspended, chunkBuffer, str2arr } from './utils';
+import { resumeIfSuspended, chunkBuffer } from './utils';
 import { sampleBufferSize } from './constants';
+
+const NullTerminator = "\0";
 
 const createF32Array = (bufferSize, quietInterop) => {
   const pointer = quietInterop.malloc(4 * bufferSize);
@@ -13,6 +15,8 @@ const createF32Array = (bufferSize, quietInterop) => {
   };
 };
 
+const encode = str => new TextEncoder().encode(str + NullTerminator)
+
 export default class Transmitter {
   constructor(audioContext, quietInterop) {
     this.destroyed = false;
@@ -21,8 +25,8 @@ export default class Transmitter {
   }
 
   selectProfile(profile, clampFrame) {
-    const cProfiles = str2arr(JSON.stringify({ profile }));
-    const cProfile = str2arr('profile');
+    const cProfiles = encode(JSON.stringify({ profile }));
+    const cProfile = encode('profile');
     const opt = this.quietInterop.quietEncoderProfileStr(cProfiles, cProfile);
 
     // libquiet internally works at 44.1kHz but the local sound card

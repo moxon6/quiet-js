@@ -1,6 +1,5 @@
 export default (imodule) => ({
     free: (opt) => imodule.ccall('free', null, ['pointer'], [opt]),
-    intArrayFromString: (str) => imodule.intArrayFromString(str),
     malloc: (bufferSize) => imodule.ccall('malloc', 'pointer', ['number'], [bufferSize]),
     quietEncoderClampFrameLen: (encoder, sampleBufferSize) => imodule.ccall('quiet_encoder_clamp_frame_len', 'number', ['pointer', 'number'], [encoder, sampleBufferSize]),
     quietEncoderCreate: (opt, sampleRate) => imodule.ccall('quiet_encoder_create', 'pointer', ['pointer', 'number'], [opt, sampleRate]),

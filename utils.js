@@ -2,6 +2,13 @@ export const total = (arr) => arr.reduce((a, b) => a + b, 0);
 
 export const mean = (arr) => total(arr) / arr.length;
 
+export function str2arr(s) {
+  return [
+    ...s.split("").map(x => x.charCodeAt(0)),
+    0
+  ]
+}
+
 export function str2ab(s) {
   const sUtf8 = unescape(encodeURIComponent(s));
   const buf = new ArrayBuffer(sUtf8.length);

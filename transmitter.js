@@ -1,4 +1,4 @@
-import { resumeIfSuspended, chunkBuffer } from './utils';
+import { resumeIfSuspended, chunkBuffer, str2arr } from './utils';
 import { sampleBufferSize } from './constants';
 
 const createF32Array = (bufferSize, quietInterop) => {
@@ -21,8 +21,8 @@ export default class Transmitter {
   }
 
   selectProfile(profile, clampFrame) {
-    const cProfiles = this.quietInterop.intArrayFromString(JSON.stringify({ profile }));
-    const cProfile = this.quietInterop.intArrayFromString('profile');
+    const cProfiles = str2arr(JSON.stringify({ profile }));
+    const cProfile = str2arr('profile');
     const opt = this.quietInterop.quietEncoderProfileStr(cProfiles, cProfile);
 
     // libquiet internally works at 44.1kHz but the local sound card

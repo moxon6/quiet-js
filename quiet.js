@@ -7,10 +7,12 @@ export default class Quiet {
     this.interop = createQuietInterop(module);
   }
 
-  transmit({ payload, profile, clampFrame }) {
-    new Transmitter(this.audioContext, this.interop)
-      .selectProfile(profile, clampFrame)
-      .transmit(payload)
+  async transmit({ payload, profile, clampFrame }) {
+    (
+      await new Transmitter(this.audioContext, this.interop)
+        .selectProfile(profile, clampFrame)
+        .transmit(payload)
+    )
       .destroy();
   }
 }

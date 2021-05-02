@@ -15,6 +15,7 @@ const createF32Array = (bufferSize, quietInterop) => {
   };
 };
 
+const encode = str => [...new TextEncoder().encode(str + NullTerminator)]
 
 export default class Transmitter {
   constructor(audioContext, quietInterop) {
@@ -24,8 +25,8 @@ export default class Transmitter {
   }
 
   selectProfile(profile, clampFrame) {
-    const cProfiles = this.quietInterop.module.intArrayFromString(JSON.stringify({ profile }));
-    const cProfile = this.quietInterop.module.intArrayFromString('profile');
+    const cProfiles = encode(JSON.stringify({ profile }));
+    const cProfile = encode('profile');
   
     const opt = this.quietInterop.quietEncoderProfileStr(cProfiles, cProfile);
 

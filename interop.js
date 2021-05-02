@@ -9,5 +9,6 @@ export default (imodule) => ({
     quietEncoderProfileStr: (cProfiles, cProfile) => imodule.ccall('quiet_encoder_profile_str', 'pointer', ['array', 'array'], [cProfiles, cProfile]),
     quietEncoderSend: (encoder, frame, byteLength) => imodule._quiet_encoder_send(encoder, frame, byteLength),
     subArray: (start, finish) => imodule.HEAPF32.subarray(start, finish),
+    module: imodule
   });
   

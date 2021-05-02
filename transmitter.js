@@ -15,7 +15,6 @@ const createF32Array = (bufferSize, quietInterop) => {
   };
 };
 
-const encode = str => new TextEncoder().encode(str + NullTerminator)
 
 export default class Transmitter {
   constructor(audioContext, quietInterop) {
@@ -25,8 +24,9 @@ export default class Transmitter {
   }
 
   selectProfile(profile, clampFrame) {
-    const cProfiles = encode(JSON.stringify({ profile }));
-    const cProfile = encode('profile');
+    const cProfiles = this.quietInterop.module.intArrayFromString(JSON.stringify({ profile }));
+    const cProfile = this.quietInterop.module.intArrayFromString('profile');
+  
     const opt = this.quietInterop.quietEncoderProfileStr(cProfiles, cProfile);
 
     // libquiet internally works at 44.1kHz but the local sound card

@@ -15,7 +15,7 @@ const createF32Array = (bufferSize, quietInterop) => {
   };
 };
 
-const encode = str => [...new TextEncoder().encode(str + NullTerminator)]
+const encode = str => new TextEncoder().encode(str + NullTerminator)
 
 function allocateStringOnStack(module, string) {
   const arr = encode(string);

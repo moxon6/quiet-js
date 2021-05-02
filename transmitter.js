@@ -17,6 +17,13 @@ const createF32Array = (bufferSize, quietInterop) => {
 
 const encode = str => [...new TextEncoder().encode(str + NullTerminator)]
 
+function allocateStringOnStack(module, string) {
+  const arr = encode(string);
+  var ret = module.stackAlloc(arr.length);
+  module.HEAP8.set(arr, ret);
+  return ret;
+}
+
 export default class Transmitter {
   constructor(audioContext, quietInterop) {
     this.destroyed = false;
@@ -25,25 +32,24 @@ export default class Transmitter {
   }
 
   selectProfile(profile, clampFrame) {
-    const cProfiles = encode(JSON.stringify({ profile }));
-    const cProfile = encode('profile');
-  
+    const module = this.quietInterop.module;
+    const stack = module.stackSave()
+
+    const cProfiles = allocateStringOnStack(module, JSON.stringify({ profile }));
+    const cProfile = allocateStringOnStack(module, 'profile');
+
     const opt = this.quietInterop.quietEncoderProfileStr(cProfiles, cProfile);
 
-    // libquiet internally works at 44.1kHz but the local sound card
-    // may be a different rate. we inform quiet about that here
     this.encoder = this.quietInterop.quietEncoderCreate(opt, this.audioContext.sampleRate);
     this.quietInterop.free(opt);
 
-    // enable close_frame which prevents data frames from overlapping multiple
-    // sample buffers. this is very convenient if our system is not fast enough
-    // to feed the sound card without any gaps between subsequent buffers due
-    // to e.g. gc pause. inform quiet about our sample buffer size here
     this.frameLength = clampFrame 
       ? this.quietInterop.quietEncoderClampFrameLen(this.encoder, sampleBufferSize)
       : this.quietInterop.quietEncoderGetFrameLen(this.encoder);
 
     this.samples = createF32Array(sampleBufferSize, this.quietInterop);
+    
+    module.stackRestore(stack);
     return this;
   }
 

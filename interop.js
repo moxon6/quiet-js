@@ -1,5 +1,5 @@
 export default (imodule) => ({
-    free: (opt) => imodule.ccall('free', null, ['pointer'], [opt]),
+    free: (opt) => imodule._free(opt),
     malloc: (bufferSize) => imodule.ccall('malloc', 'pointer', ['number'], [bufferSize]),
     quietEncoderClampFrameLen: (encoder, sampleBufferSize) => imodule._quiet_encoder_clamp_frame_len(encoder, sampleBufferSize),
     quietEncoderCreate: (opt, sampleRate) => imodule._quiet_encoder_create(opt, sampleRate),

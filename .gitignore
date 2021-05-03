@@ -1,4 +1,3 @@
-build.js
 build.wasm
 dependencies
 quiet-profiles.json

@@ -1,5 +1,5 @@
 import Transmitter from './transmitter.js';
-import { encode } from './utils';
+import { encode } from './utils.js';
 
 export default class Quiet {
   constructor(audioContext, instance) {

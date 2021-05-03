@@ -1,4 +1,4 @@
-import Quiet from './quiet';
+import Quiet from './quiet.js';
 
 const importObj = {
     env: {
@@ -15,7 +15,10 @@ const importObj = {
 };
 
 export default async function(audioContext, quietWasm) {
-    const response = await fetch(quietWasm);
-    const { instance } = await WebAssembly.instantiateStreaming(response, importObj);
-    return new Quiet(audioContext, instance);
+  const instantiate = quietWasm instanceof Promise
+    ? WebAssembly.instantiateStreaming
+    : WebAssembly.instantiate
+
+  const { instance } = await instantiate(quietWasm, importObj);
+  return new Quiet(audioContext, instance);
 }

@@ -4,8 +4,8 @@ import {
   allocateArrayOnStack,
   allocateStringOnStack,
   mallocArray 
-} from './utils';
-import { sampleBufferSize } from './constants';
+} from './utils.js';
+import { sampleBufferSize } from './constants.js';
 
 export default class Transmitter {
   constructor(audioContext, instance) {
@@ -54,7 +54,7 @@ export default class Transmitter {
 
       for (let i = written; i < sampleBufferSize; i ++) {
         this.samples.view[i] = 0;
-      } 
+      }
 
       audioBuffer.copyToChannel(this.samples.view, 0, 0);
   

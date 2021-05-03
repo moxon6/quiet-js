@@ -3,9 +3,9 @@ import { sampleBufferSize } from './constants';
 
 const NullTerminator = "\0";
 
-const createF32Array = (bufferSize, quietInterop) => {
-  const pointer = quietInterop.malloc(4 * bufferSize);
-  const view = quietInterop.subArray(
+const createF32Array = (bufferSize, module) => {
+  const pointer = module.exports. malloc(4 * bufferSize);
+  const view = module.HEAPF32.subarray(
     (pointer / 4), (pointer / 4) + bufferSize,
   );
 
@@ -28,36 +28,35 @@ function allocateStringOnStack(module, string) {
 }
 
 export default class Transmitter {
-  constructor(audioContext, quietInterop) {
+  constructor(audioContext, module) {
     this.destroyed = false;
     this.audioContext = audioContext;
-    this.quietInterop = quietInterop;
+    this.module = module;
   }
 
   selectProfile(profile, clampFrame) {
-    const module = this.quietInterop.module;
-    const stack = module.exports.stackSave()
+    
+    const stack = this.module.exports.stackSave()
 
-    const cProfiles = allocateStringOnStack(module, JSON.stringify({ profile }));
-    const cProfile = allocateStringOnStack(module, 'profile');
+    const cProfiles = allocateStringOnStack(this.module, JSON.stringify({ profile }));
+    const cProfile = allocateStringOnStack(this.module, 'profile');
 
-    const opt = this.quietInterop.quietEncoderProfileStr(cProfiles, cProfile);
+    const opt = this.module.exports.quiet_encoder_profile_str(cProfiles, cProfile);
 
-    this.encoder = this.quietInterop.quietEncoderCreate(opt, this.audioContext.sampleRate);
-    this.quietInterop.free(opt);
+    this.encoder = this.module.exports.quiet_encoder_create(opt, this.audioContext.sampleRate);
+    this.module.exports.free(opt);
 
     this.frameLength = clampFrame 
-      ? this.quietInterop.quietEncoderClampFrameLen(this.encoder, sampleBufferSize)
-      : this.quietInterop.quietEncoderGetFrameLen(this.encoder);
+      ? this.module.exports.quiet_encoder_clamp_frame_len(this.encoder, sampleBufferSize)
+      : this.module.exports.quiet_encoder_get_frame_len(this.encoder);
 
-    this.samples = createF32Array(sampleBufferSize, this.quietInterop);
+    this.samples = createF32Array(sampleBufferSize, this.module);
     
-    module.exports.stackRestore(stack);
+    this.module.exports.stackRestore(stack);
     return this;
   }
 
   async transmit(buf) {
-    const module = this.quietInterop.module;
     resumeIfSuspended(this.audioContext);
 
     const payload = chunkBuffer(buf, this.frameLength);
@@ -68,9 +67,9 @@ export default class Transmitter {
         .audioContext
         .createBuffer(1, sampleBufferSize, this.audioContext.sampleRate);
       
-      const frameOnStack = allocateArrayOnStack(module, new Uint8Array(frame));
-      this.quietInterop.quietEncoderSend(this.encoder, frameOnStack, frame.byteLength);
-      const written = this.quietInterop.quietEncoderEmit(this.encoder, this.samples.pointer, sampleBufferSize);
+      const frameOnStack = allocateArrayOnStack(this.module, new Uint8Array(frame));
+      this.module.exports.quiet_encoder_send(this.encoder, frameOnStack, frame.byteLength);
+      const written = this.module.exports.quiet_encoder_emit(this.encoder, this.samples.pointer, sampleBufferSize);
 
       for (let i = written; i < sampleBufferSize; i ++) {
         this.samples.view[i] = 0;
@@ -90,8 +89,8 @@ export default class Transmitter {
 
   destroy() {
     if (!this.destroyed) {
-      this.quietInterop.free(this.samples.pointer);
-      this.quietInterop.quietEncoderDestroy(this.encoder);
+      this.module.exports.free(this.samples.pointer);
+      this.module.exports.quiet_encoder_destroy(this.encoder);
       this.destroyed = true;
     }
     return this;

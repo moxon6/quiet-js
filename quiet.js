@@ -1,15 +1,14 @@
 import Transmitter from './transmitter.js';
-import createQuietInterop from './interop.js';
 
 export default class Quiet {
   constructor(audioContext, module) {
     this.audioContext = audioContext;
-    this.interop = createQuietInterop(module);
+    this.module = module;
   }
 
   async transmit({ payload, profile, clampFrame }) {
     (
-      await new Transmitter(this.audioContext, this.interop)
+      await new Transmitter(this.audioContext, this.module)
         .selectProfile(profile, clampFrame)
         .transmit(payload)
     )

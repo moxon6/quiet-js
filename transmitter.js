@@ -54,6 +54,7 @@ export default class Transmitter {
   }
 
   async transmit(buf) {
+    const module = this.quietInterop.module;
     resumeIfSuspended(this.audioContext);
 
     const payload = chunkBuffer(buf, this.frameLength);
@@ -63,8 +64,14 @@ export default class Transmitter {
       const audioBuffer = this
         .audioContext
         .createBuffer(1, sampleBufferSize, this.audioContext.sampleRate);
-      this.quietInterop.quietEncoderSend(this.encoder, new Uint8Array(frame), frame.byteLength);
-      this.quietInterop.quietEncoderEmit(this.encoder, this.samples.pointer, sampleBufferSize);
+      //this.quietInterop.quietEncoderSend(this.encoder, new Uint8Array(frame), frame.byteLength);
+      module.ccall('quiet_encoder_send', 'number', ['pointer', 'array', 'number'], [this.encoder, new Uint8Array(frame), frame.byteLength]);
+      const written = this.quietInterop.quietEncoderEmit(this.encoder, this.samples.pointer, sampleBufferSize);
+
+      for (let i = written; i < sampleBufferSize; i ++) {
+        this.samples.view[i] = 0;
+      } 
+
       audioBuffer.copyToChannel(this.samples.view, 0, 0);
   
       const audioBufferNode = new AudioBufferSourceNode(this.audioContext);

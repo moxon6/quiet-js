@@ -18,7 +18,7 @@ const createF32Array = (bufferSize, quietInterop) => {
 const encode = str => new TextEncoder().encode(str + NullTerminator)
 
 function allocateArrayOnStack(module, arr) {
-  var ret = module.stackAlloc(arr.length);
+  var ret = module.exports.stackAlloc(arr.length);
   module.HEAP8.set(arr, ret);
   return ret;
 }
@@ -36,7 +36,7 @@ export default class Transmitter {
 
   selectProfile(profile, clampFrame) {
     const module = this.quietInterop.module;
-    const stack = module.stackSave()
+    const stack = module.exports.stackSave()
 
     const cProfiles = allocateStringOnStack(module, JSON.stringify({ profile }));
     const cProfile = allocateStringOnStack(module, 'profile');
@@ -52,7 +52,7 @@ export default class Transmitter {
 
     this.samples = createF32Array(sampleBufferSize, this.quietInterop);
     
-    module.stackRestore(stack);
+    module.exports.stackRestore(stack);
     return this;
   }
 

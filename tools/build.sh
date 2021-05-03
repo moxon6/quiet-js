@@ -5,7 +5,7 @@ em++ \
     -lliquid \
     -ljansson \
     -lfec \
-    -o build.wasm \
+    -o quiet.wasm \
     --no-entry \
     -s MODULARIZE=1 \
     -s STRICT=1 \

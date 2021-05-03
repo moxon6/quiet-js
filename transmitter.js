@@ -7,6 +7,8 @@ import {
 } from './utils.js';
 import { sampleBufferSize } from './constants.js';
 
+const waitUntil = seconds => new Promise(resolve => setTimeout(resolve, seconds * 1000) )
+
 export default class Transmitter {
   constructor(audioContext, instance) {
     this.destroyed = false;
@@ -66,6 +68,7 @@ export default class Transmitter {
     }
     
     this.instance.exports.stackRestore(stack);
+    await waitUntil(t - this.audioContext.currentTime)
     return this;
   }
 

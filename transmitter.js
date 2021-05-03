@@ -1,31 +1,11 @@
-import { resumeIfSuspended, chunkBuffer } from './utils';
+import { 
+  resumeIfSuspended, 
+  chunkBuffer,
+  allocateArrayOnStack,
+  allocateStringOnStack,
+  mallocArray 
+} from './utils';
 import { sampleBufferSize } from './constants';
-
-const NullTerminator = "\0";
-
-const createF32Array = (bufferSize, module) => {
-  const pointer = module.exports. malloc(4 * bufferSize);
-  const view = module.HEAPF32.subarray(
-    (pointer / 4), (pointer / 4) + bufferSize,
-  );
-
-  return {
-    pointer,
-    view,
-  };
-};
-
-const encode = str => new TextEncoder().encode(str + NullTerminator)
-
-function allocateArrayOnStack(module, arr) {
-  var ret = module.exports.stackAlloc(arr.length);
-  module.HEAP8.set(arr, ret);
-  return ret;
-}
-
-function allocateStringOnStack(module, string) {
-  return allocateArrayOnStack(module, encode(string))
-}
 
 export default class Transmitter {
   constructor(audioContext, module) {
@@ -49,7 +29,7 @@ export default class Transmitter {
       ? this.module.exports.quiet_encoder_clamp_frame_len(this.encoder, sampleBufferSize)
       : this.module.exports.quiet_encoder_get_frame_len(this.encoder);
 
-    this.samples = createF32Array(sampleBufferSize, this.module);
+    this.samples = mallocArray(sampleBufferSize, this.module);
     
     this.module.exports.stackRestore(stack);
     return this;

@@ -1,12 +1,11 @@
 em++ \
-    -O2 \
     -I${HOME}/opt/include \
     -L${HOME}/opt/lib \
     -lquiet \
     -lliquid \
     -ljansson \
     -lfec \
-    -o build.js \
+    -o build.wasm \
     --no-entry \
     -s MODULARIZE=1 \
     -s STRICT=1 \

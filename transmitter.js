@@ -48,8 +48,8 @@ export default class Transmitter {
         .audioContext
         .createBuffer(1, sampleBufferSize, this.audioContext.sampleRate);
       
-      const frameOnStack = allocateArrayOnStack(this.module, new Uint8Array(frame));
-      this.module.exports.quiet_encoder_send(this.encoder, frameOnStack, frame.byteLength);
+      const framePointer = allocateArrayOnStack(this.module, new Uint8Array(frame));
+      this.module.exports.quiet_encoder_send(this.encoder, framePointer, frame.byteLength);
       const written = this.module.exports.quiet_encoder_emit(this.encoder, this.samples.pointer, sampleBufferSize);
 
       for (let i = written; i < sampleBufferSize; i ++) {

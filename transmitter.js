@@ -17,11 +17,14 @@ const createF32Array = (bufferSize, quietInterop) => {
 
 const encode = str => new TextEncoder().encode(str + NullTerminator)
 
-function allocateStringOnStack(module, string) {
-  const arr = encode(string);
+function allocateArrayOnStack(module, arr) {
   var ret = module.stackAlloc(arr.length);
   module.HEAP8.set(arr, ret);
   return ret;
+}
+
+function allocateStringOnStack(module, string) {
+  return allocateArrayOnStack(module, encode(string))
 }
 
 export default class Transmitter {
@@ -64,8 +67,9 @@ export default class Transmitter {
       const audioBuffer = this
         .audioContext
         .createBuffer(1, sampleBufferSize, this.audioContext.sampleRate);
-      //this.quietInterop.quietEncoderSend(this.encoder, new Uint8Array(frame), frame.byteLength);
-      module.ccall('quiet_encoder_send', 'number', ['pointer', 'array', 'number'], [this.encoder, new Uint8Array(frame), frame.byteLength]);
+      
+      const frameOnStack = allocateArrayOnStack(module, new Uint8Array(frame));
+      this.quietInterop.quietEncoderSend(this.encoder, frameOnStack, frame.byteLength);
       const written = this.quietInterop.quietEncoderEmit(this.encoder, this.samples.pointer, sampleBufferSize);
 
       for (let i = written; i < sampleBufferSize; i ++) {

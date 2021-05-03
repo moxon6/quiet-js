@@ -2,14 +2,14 @@ import Transmitter from './transmitter.js';
 import { encode } from './utils';
 
 export default class Quiet {
-  constructor(audioContext, module) {
+  constructor(audioContext, instance) {
     this.audioContext = audioContext;
-    this.module = module;
+    this.instance = instance;
   }
 
   async transmit({ payload, profile, clampFrame }) {
     (
-      await new Transmitter(this.audioContext, this.module)
+      await new Transmitter(this.audioContext, this.instance)
         .selectProfile(profile, clampFrame)
         .transmit(encode(payload))
     )

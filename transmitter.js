@@ -35,7 +35,6 @@ export default class Transmitter {
   }
 
   selectProfile(profile, clampFrame) {
-    
     const stack = this.module.exports.stackSave()
 
     const cProfiles = allocateStringOnStack(this.module, JSON.stringify({ profile }));
@@ -57,6 +56,8 @@ export default class Transmitter {
   }
 
   async transmit(buf) {
+    const stack = this.module.exports.stackSave()
+
     resumeIfSuspended(this.audioContext);
 
     const payload = chunkBuffer(buf, this.frameLength);
@@ -83,7 +84,8 @@ export default class Transmitter {
       audioBufferNode.start(t);
       t += audioBuffer.duration;
     }
-
+    
+    this.module.exports.stackRestore(stack);
     return this;
   }
 

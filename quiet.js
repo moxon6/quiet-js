@@ -1,4 +1,5 @@
 import Transmitter from './transmitter.js';
+import { encode } from './utils';
 
 export default class Quiet {
   constructor(audioContext, module) {
@@ -10,7 +11,7 @@ export default class Quiet {
     (
       await new Transmitter(this.audioContext, this.module)
         .selectProfile(profile, clampFrame)
-        .transmit(payload)
+        .transmit(encode(payload))
     )
       .destroy();
   }

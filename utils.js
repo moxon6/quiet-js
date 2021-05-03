@@ -15,17 +15,7 @@ export function chunkBuffer(buffer, chunkSize) {
 
 const NullTerminator = "\0";
 
-const encode = str => new TextEncoder().encode(str + NullTerminator)
-
-export function str2ab(s) {
-  const sUtf8 = unescape(encodeURIComponent(s));
-  const buf = new ArrayBuffer(sUtf8.length);
-  const bufView = new Uint8Array(buf);
-  for (let i = 0; i < sUtf8.length; i += 1) {
-    bufView[i] = sUtf8.charCodeAt(i);
-  }
-  return buf;
-}
+export const encode = str => new TextEncoder().encode(str)
 
 export function allocateArrayOnStack(module, arr) {
   var ret = module.exports.stackAlloc(arr.length);
@@ -35,7 +25,7 @@ export function allocateArrayOnStack(module, arr) {
 }
 
 export function allocateStringOnStack(module, string) {
-  return allocateArrayOnStack(module, encode(string))
+  return allocateArrayOnStack(module, encode(string + NullTerminator))
 }
 
 export function mallocArray(bufferSize, module) {

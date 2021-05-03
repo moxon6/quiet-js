@@ -1,6 +1,5 @@
 import Quiet from './quiet';
-
-export * from './utils';
+import getInstance from './build'
 
 export default async function(audioContext, quietWasm) {
     const instance = await getInstance(quietWasm);

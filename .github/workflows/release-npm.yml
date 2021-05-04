@@ -1,0 +1,22 @@
+name: Release NPM
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      
+
+    - name: Fetch dependencies
+      run: |
+        git clone https://github.com/quiet/quiet.git --depth 1
+        cp quiet/quiet-profiles.json js
+        wget https://github.com/moxon6/quiet-wasm/releases/latest/download/quiet.wasm -O js/quiet.wasm
+
+    - name: Publish to npm
+      uses: JS-DevTools/npm-publish@v1
+      with:
+        package: js/package.json
+        token: ${{ secrets.NPM_TOKEN }}

@@ -1,0 +1,21 @@
+name: Deploy example to github pages
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      
+    - name: Build Demo Site
+      run: |
+        cd examples/web
+        npm ci
+        npm run build
+
+    - name: Deploy
+      uses: JamesIves/github-pages-deploy-action@4.1.1
+      with:
+        branch: gh-pages
+        folder: examples/web/dist

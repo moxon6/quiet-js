@@ -1,0 +1,20 @@
+{
+  "name": "quiet-js-example-web",
+  "version": "1.0.0",
+  "description": "Examples for Quiet.js in Web Environment",
+  "type": "module",
+  "author": "Martin Moxon",
+  "license": "MIT",
+  "scripts": {
+    "build": "parcel build index.html",
+    "start": "parcel index.html"
+  },
+  "dependencies": {
+    "@moxon6/quiet-js": "^0.0.2-3",
+    "parcel": "^2.0.0-beta.2",
+    "parcel-plugin-static-files-copy": "^2.6.0"
+  },
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.0.0-beta.2"
+  }
+}

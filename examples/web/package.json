@@ -6,7 +6,7 @@
   "author": "Martin Moxon",
   "license": "MIT",
   "scripts": {
-    "build": "parcel build --public-url ./quiet-js index.html",
+    "build": "parcel build --public-url ./ index.html",
     "start": "parcel index.html"
   },
   "dependencies": {

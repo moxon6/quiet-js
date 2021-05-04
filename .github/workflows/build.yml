@@ -53,8 +53,8 @@ jobs:
         git clone https://github.com/quiet/quiet.git
         cd quiet
         git apply ../quiet-js/tools/quiet.patch
-        mkdir -p build_js
-        cd build_js
+        mkdir -p build_wasm
+        cd build_wasm
         emcmake cmake .. -DCMAKE_INSTALL_PREFIX:PATH=${HOME}/opt
         emmake make
         make install
@@ -69,16 +69,16 @@ jobs:
           -lliquid \
           -ljansson \
           -lfec \
-          -o quiet-js/quiet.wasm \
+          -o quiet-js/js/quiet.wasm \
           --no-entry \
           -s MODULARIZE=1 \
           -s STRICT=1 \
           -s EXPORTED_FUNCTIONS='["_free","_malloc","_quiet_encoder_clamp_frame_len","_quiet_encoder_create","_quiet_encoder_destroy","_quiet_encoder_emit","_quiet_encoder_get_frame_len","_quiet_encoder_profile_str","_quiet_encoder_send"]'
 
-        cp ${HOME}/opt/share/quiet/quiet-profiles.json quiet-js
+        cp ${HOME}/opt/share/quiet/quiet-profiles.json quiet-js/js
     
     - name: "Publish to npm"
       uses: JS-DevTools/npm-publish@v1
       with:
-        package: "./quiet-js/package.json"
+        package: "./quiet-js/js/package.json"
         token: ${{ secrets.NPM_TOKEN }}

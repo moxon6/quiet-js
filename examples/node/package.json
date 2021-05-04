@@ -1,0 +1,14 @@
+{
+  "name": "quiet-js-examples-node",
+  "version": "1.0.0",
+  "description": "Examples For Quiet.js in NodeJS environment",
+  "type": "module",
+  "author": "Martin Moxon",
+  "license": "MIT",
+  "dependencies": {
+    "@moxon6/quiet-js": "*",
+    "express": "^4.17.1",
+    "speaker": "^0.5.3",
+    "web-audio-api": "^0.2.2"
+  }
+}

@@ -14,6 +14,7 @@ jobs:
         git clone https://github.com/quiet/quiet.git --depth 1
         cp quiet/quiet-profiles.json js
         wget https://github.com/moxon6/quiet-wasm/releases/latest/download/quiet.wasm -O js/quiet.wasm
+        cp README.md js
 
     - name: Publish to npm
       uses: JS-DevTools/npm-publish@v1

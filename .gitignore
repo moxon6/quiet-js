@@ -1,3 +1,2 @@
-quiet.wasm
-quiet-profiles.json
 node_modules
+dist

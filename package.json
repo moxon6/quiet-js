@@ -1,6 +1,6 @@
 {
   "name": "@moxon6/quiet-js",
-  "version": "0.0.2-4",
+  "version": "0.0.2-5",
   "description": "Emscripten build of quiet.js",
   "type": "module",
   "module": "src",

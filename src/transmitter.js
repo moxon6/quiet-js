@@ -5,7 +5,8 @@ import {
   allocateStringOnStack,
   mallocArray 
 } from './utils.js';
-import { sampleBufferSize } from './constants.js';
+
+const sampleBufferSize = 16384;
 
 const waitUntil = seconds => new Promise(resolve => setTimeout(resolve, seconds * 1000) )
 

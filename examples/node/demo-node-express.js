@@ -16,7 +16,7 @@ async function configureQuiet() {
     sampleRate: audioContext.sampleRate,
   });
 
-  return await quietjs(
+  return quietjs(
     audioContext,
     wasm,
   );
@@ -38,6 +38,7 @@ async function main() {
 
   app.post('/output', (req, res) => {
     const payload = req.body.message;
+    // eslint-disable-next-line no-console
     console.log(`Encoding: "${payload}"`);
     quiet.transmit({
       profile: profiles.audible,

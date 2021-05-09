@@ -15,7 +15,7 @@ async function configureQuiet() {
     sampleRate: audioContext.sampleRate,
   });
 
-  return await quietjs(
+  return quietjs(
     audioContext,
     wasm,
   );

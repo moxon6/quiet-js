@@ -1,14 +1,14 @@
-import { 
-  resumeIfSuspended, 
+import {
+  resumeIfSuspended,
   chunkBuffer,
   allocateArrayOnStack,
   allocateStringOnStack,
-  mallocArray 
+  mallocArray,
 } from './utils.js';
 
 const sampleBufferSize = 16384;
 
-const waitUntil = seconds => new Promise(resolve => setTimeout(resolve, seconds * 1000) )
+const waitUntil = (seconds) => new Promise((resolve) => setTimeout(resolve, seconds * 1000));
 
 export default class Transmitter {
   constructor(audioContext, instance) {
@@ -18,7 +18,7 @@ export default class Transmitter {
   }
 
   selectProfile(profile, clampFrame) {
-    const stack = this.instance.exports.stackSave()
+    const stack = this.instance.exports.stackSave();
 
     const cProfiles = allocateStringOnStack(this.instance, JSON.stringify({ profile }));
     const cProfile = allocateStringOnStack(this.instance, 'profile');
@@ -28,18 +28,18 @@ export default class Transmitter {
     this.encoder = this.instance.exports.quiet_encoder_create(opt, this.audioContext.sampleRate);
     this.instance.exports.free(opt);
 
-    this.frameLength = clampFrame 
+    this.frameLength = clampFrame
       ? this.instance.exports.quiet_encoder_clamp_frame_len(this.encoder, sampleBufferSize)
       : this.instance.exports.quiet_encoder_get_frame_len(this.encoder);
 
     this.samples = mallocArray(sampleBufferSize, this.instance);
-    
+
     this.instance.exports.stackRestore(stack);
     return this;
   }
 
   async transmit(buf) {
-    const stack = this.instance.exports.stackSave()
+    const stack = this.instance.exports.stackSave();
 
     resumeIfSuspended(this.audioContext);
 
@@ -50,26 +50,26 @@ export default class Transmitter {
       const audioBuffer = this
         .audioContext
         .createBuffer(1, sampleBufferSize, this.audioContext.sampleRate);
-      
+
       const framePointer = allocateArrayOnStack(this.instance, new Uint8Array(frame));
       this.instance.exports.quiet_encoder_send(this.encoder, framePointer, frame.byteLength);
       const written = this.instance.exports.quiet_encoder_emit(this.encoder, this.samples.pointer, sampleBufferSize);
 
-      for (let i = written; i < sampleBufferSize; i ++) {
+      for (let i = written; i < sampleBufferSize; i++) {
         this.samples.view[i] = 0;
       }
 
       audioBuffer.copyToChannel(this.samples.view, 0, 0);
-  
+
       const audioBufferNode = new AudioBufferSourceNode(this.audioContext);
       audioBufferNode.buffer = audioBuffer;
       audioBufferNode.connect(this.audioContext.destination);
       audioBufferNode.start(t);
       t += audioBuffer.duration;
     }
-    
+
     this.instance.exports.stackRestore(stack);
-    await waitUntil(t - this.audioContext.currentTime)
+    await waitUntil(t - this.audioContext.currentTime);
     return this;
   }
 

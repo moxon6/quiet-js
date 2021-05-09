@@ -4,7 +4,15 @@
   "description": "Emscripten build of quiet.js",
   "type": "module",
   "module": "src",
+  "scripts": {
+    "lint": "eslint src/*.js"
+  },
   "dependencies": {
     "web-audio-api": "^0.2.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.26.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
   }
 }

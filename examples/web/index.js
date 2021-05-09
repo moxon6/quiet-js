@@ -1,3 +1,5 @@
+// TODO: Fix
+/* eslint-disable import/no-unresolved */
 import quietjs from '@moxon6/quiet-js';
 import quietProfiles from '@moxon6/quiet-js/quiet-profiles.json';
 import quietWasm from 'url:@moxon6/quiet-js/quiet.wasm';

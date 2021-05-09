@@ -14,7 +14,7 @@ const importObj = {
   },
 };
 
-export default async function (audioContext, quietWasm) {
+export default async function createQuiet(audioContext, quietWasm) {
   const instantiate = quietWasm instanceof Promise
     ? WebAssembly.instantiateStreaming
     : WebAssembly.instantiate;

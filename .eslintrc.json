@@ -12,5 +12,7 @@
         "sourceType": "module"
     },
     "rules": {
+        "import/extensions": "off",
+        "no-restricted-syntax": "off"
     }
 }

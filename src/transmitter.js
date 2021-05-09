@@ -53,9 +53,13 @@ export default class Transmitter {
 
       const framePointer = allocateArrayOnStack(this.instance, new Uint8Array(frame));
       this.instance.exports.quiet_encoder_send(this.encoder, framePointer, frame.byteLength);
-      const written = this.instance.exports.quiet_encoder_emit(this.encoder, this.samples.pointer, sampleBufferSize);
+      const written = this.instance.exports.quiet_encoder_emit(
+        this.encoder,
+        this.samples.pointer,
+        sampleBufferSize,
+      );
 
-      for (let i = written; i < sampleBufferSize; i++) {
+      for (let i = written; i < sampleBufferSize; i += 1) {
         this.samples.view[i] = 0;
       }
 

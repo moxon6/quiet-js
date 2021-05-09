@@ -5,7 +5,7 @@
   "type": "module",
   "module": "src",
   "scripts": {
-    "lint": "eslint src/*.js"
+    "lint": "eslint src/*.js examples/**/*.js"
   },
   "dependencies": {
     "web-audio-api": "^0.2.2"

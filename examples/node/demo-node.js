@@ -34,10 +34,9 @@ async function main() {
     quiet.transmit({
       profile: profiles.audible,
       clampFrame: false,
-      payload: "This is an example \n",
+      payload: 'This is an example \n',
     });
   }, 2000);
-
 }
 
 main();

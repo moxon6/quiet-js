@@ -19,12 +19,12 @@ async function main() {
   }
 
   document
-    .querySelector("#audible-text")
-    .addEventListener("submit", e => {
-      const value = e.target.querySelector("textarea").value
-      sendText(value)
-      e.preventDefault()
-    })
+    .querySelector('#audible-text')
+    .addEventListener('submit', (e) => {
+      const { value } = e.target.querySelector('textarea');
+      sendText(value);
+      e.preventDefault();
+    });
 }
 
 main();

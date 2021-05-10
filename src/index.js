@@ -14,11 +14,11 @@ const importObj = {
   },
 };
 
-export default async function createQuiet(audioContext, quietWasm) {
+export default async function createQuiet(audioContext, quietWasm, quietWorletPath) {
   const instantiate = quietWasm instanceof Promise
     ? WebAssembly.instantiateStreaming
     : WebAssembly.instantiate;
 
   const { instance } = await instantiate(quietWasm, importObj);
-  return new Quiet(audioContext, instance);
+  return new Quiet(audioContext, instance, quietWorletPath);
 }

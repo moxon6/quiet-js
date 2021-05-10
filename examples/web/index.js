@@ -1,8 +1,9 @@
 // TODO: Fix
 /* eslint-disable import/no-unresolved */
-import quietjs from '@moxon6/quiet-js';
-import quietProfiles from '@moxon6/quiet-js/quiet-profiles.json';
-import quietWasm from 'url:@moxon6/quiet-js/quiet.wasm';
+import quietWasm from 'url:../../quiet.wasm';
+import quietWorletPath from 'url:../../src/quiet-worklet.js';
+import quietProfiles from '../../quiet-profiles.json';
+import quietjs from '../../src/index';
 
 const audioContext = new AudioContext();
 
@@ -10,6 +11,7 @@ async function main() {
   const quiet = await quietjs(
     audioContext,
     fetch(quietWasm),
+    quietWorletPath,
   );
 
   function sendText(payload) {
@@ -27,6 +29,8 @@ async function main() {
       sendText(value);
       e.preventDefault();
     });
+
+  quiet.receive();
 }
 
 main();

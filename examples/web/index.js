@@ -12,6 +12,7 @@ async function main() {
     audioContext,
     fetch(quietWasm),
     quietWorletPath,
+    quietWasm,
   );
 
   function sendText(payload) {
@@ -34,3 +35,18 @@ async function main() {
 }
 
 main();
+
+window.receive = async function receive() {
+  const quietWasmResponse = await this.quietWasmBinary;
+  const bytes = await quietWasmResponse.arrayBuffer();
+
+  await this.audioContext.audioWorklet.addModule(this.workletPath);
+  const whiteNoiseNode = new AudioWorkletNode(audioContext, 'white-noise-processor', {
+    processorOptions: {
+      bytes,
+    },
+  });
+  whiteNoiseNode.connect(audioContext.destination);
+
+  whiteNoiseNode.port.postMessage({ loadWasm: this.quietWasmPath });
+};

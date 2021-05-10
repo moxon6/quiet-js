@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "parcel build --public-url ./ index.html",
-    "start": "parcel index.html"
+    "start": "parcel index.html --no-cache"
   },
   "dependencies": {
     "@moxon6/quiet-js": "^0.0.2-5",

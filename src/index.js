@@ -1,6 +1,6 @@
 import Quiet from './quiet.js';
 
-import importObject from './importObject';
+import importObject from './importObject.js';
 
 export default async function createQuiet(audioContext, quietWasm, quietWorletPath, quietWasmPath) {
   const instantiate = quietWasm instanceof Promise

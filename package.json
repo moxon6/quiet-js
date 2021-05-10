@@ -5,7 +5,8 @@
   "type": "module",
   "module": "src",
   "scripts": {
-    "lint": "eslint src/*.js examples/**/*.js"
+    "lint": "eslint src/*.js examples/**/*.js",
+    "build": "webpack"
   },
   "dependencies": {
     "web-audio-api": "^0.2.2",
@@ -14,6 +15,7 @@
   "devDependencies": {
     "eslint": "^7.26.0",
     "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.22.1"
+    "eslint-plugin-import": "^2.22.1",
+    "webpack-cli": "^4.7.0"
   }
 }

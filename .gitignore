@@ -1,3 +1,4 @@
 node_modules
 quiet-profiles.json
 quiet.wasm
+dist

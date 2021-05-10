@@ -8,7 +8,8 @@
     "lint": "eslint src/*.js examples/**/*.js"
   },
   "dependencies": {
-    "web-audio-api": "^0.2.2"
+    "web-audio-api": "^0.2.2",
+    "webpack": "^5.36.2"
   },
   "devDependencies": {
     "eslint": "^7.26.0",

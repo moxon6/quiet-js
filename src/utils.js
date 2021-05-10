@@ -15,7 +15,11 @@ export function chunkBuffer(buffer, chunkSize) {
 
 const NullTerminator = '\0';
 
-export const encode = (str) => new TextEncoder().encode(str);
+// export const encode = (str) => new TextEncoder().encode(str);
+
+export const encode = (str) => str.split('').map((x) => x.charCodeAt(0));
+
+export const decode = (buf) => [...new Uint8Array(buf)].map((x) => String.fromCharCode(x)).join('');
 
 export function allocateArrayOnStack(instance, arr) {
   const ret = instance.exports.stackAlloc(arr.length);

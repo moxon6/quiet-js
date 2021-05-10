@@ -20,5 +20,7 @@ em++ \
         "_quiet_encoder_profile_str",
         "_quiet_encoder_send",
         "_quiet_decoder_profile_str",
-        "_quiet_decoder_create"
+        "_quiet_decoder_create",
+        "_quiet_decoder_consume",
+        "_quiet_decoder_recv"
     ]'

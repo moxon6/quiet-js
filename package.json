@@ -3,16 +3,21 @@
   "version": "0.0.2-5",
   "description": "Emscripten build of quiet.js",
   "type": "module",
-  "module": "src",
+  "main": "dist",
   "scripts": {
     "lint": "eslint src/*.js examples/**/*.js",
-    "build": "webpack"
+    "build": "webpack -c webpack.config.js",
+    "watch": "webpack --watch"
   },
   "dependencies": {
     "web-audio-api": "^0.2.2",
     "webpack": "^5.36.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.14.0",
+    "@babel/preset-env": "^7.14.1",
+    "babel-loader": "^8.2.2",
+    "bundle-loader": "^0.5.6",
     "eslint": "^7.26.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",

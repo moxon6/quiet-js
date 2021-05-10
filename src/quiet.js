@@ -3,7 +3,7 @@ import { encode } from './utils.js';
 import importObject from './importObject.js';
 
 export default class Quiet {
-  constructor(audioContext, instance, workletPath, quietWasmPath) {
+  constructor(audioContext, instance, profile, workletPath, quietWasmPath) {
     this.audioContext = audioContext;
     this.instance = instance;
     this.workletPath = workletPath;
@@ -11,12 +11,13 @@ export default class Quiet {
 
     this.quietWasmBinary = fetch(quietWasmPath);
     this.importObject = importObject;
+    this.profile = profile;
   }
 
-  async transmit({ payload, profile, clampFrame }) {
+  async transmit({ payload, clampFrame }) {
     (
       await new Transmitter(this.audioContext, this.instance)
-        .selectProfile(profile, clampFrame)
+        .selectProfile(this.profile, clampFrame)
         .transmit(encode(payload))
     )
       .destroy();

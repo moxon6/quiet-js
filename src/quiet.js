@@ -2,6 +2,12 @@ import Transmitter from './transmitter.js';
 import { encode } from './utils.js';
 import importObject from './importObject.js';
 
+const getUserAudio = async () => navigator.mediaDevices.getUserMedia({
+  audio: {
+    echoCancellation: false,
+  },
+});
+
 export default class Quiet {
   constructor(audioContext, instance, profile, workletPath, quietWasmPath) {
     this.audioContext = audioContext;
@@ -23,7 +29,24 @@ export default class Quiet {
       .destroy();
   }
 
-  async receive() {
-    await window.receive.apply(this);
+  async receive(onReceive) {
+    const quietWasmResponse = await this.quietWasmBinary;
+    const bytes = await quietWasmResponse.arrayBuffer();
+
+    await this.audioContext.audioWorklet.addModule(this.workletPath);
+    const quietProcessorNode = new AudioWorkletNode(this.audioContext, 'quiet-processor-node', {
+      processorOptions: {
+        bytes,
+        profile: this.profile,
+        sampleRate: this.audioContext.sampleRate,
+
+      },
+    });
+
+    this.audioStream = await getUserAudio();
+    const audioInput = this.audioContext.createMediaStreamSource(this.audioStream);
+    audioInput
+      .connect(quietProcessorNode);
+    quietProcessorNode.port.onmessage = (e) => onReceive(e.data);
   }
 }

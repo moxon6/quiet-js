@@ -22,7 +22,6 @@ const importObject = {
 class WhiteNoiseProcessor extends AudioWorkletProcessor {
   constructor(options) {
     super();
-    this.port.onmessage = (...args) => this.onMessage(...args);
     const { bytes, profile, sampleRate } = options.processorOptions;
     this.sampleRate = sampleRate;
     this.hasLoaded = WebAssembly.instantiate(bytes, importObject)
@@ -31,12 +30,6 @@ class WhiteNoiseProcessor extends AudioWorkletProcessor {
         this.selectProfile(instance, profile);
       });
     this.inputRingBuffer = new RingBuffer(sampleBufferSize, 1);
-  }
-
-  async onMessage(e) {
-    if (e.data.loadWasm) {
-      console.log(`Received from ${e.data.loadWasm}`);
-    }
   }
 
   async selectProfile(instance, profile) {
@@ -58,7 +51,7 @@ class WhiteNoiseProcessor extends AudioWorkletProcessor {
 
   process(inputs, outputs) {
     if (!inputs[0].length) {
-      return;
+      return false;
     }
     const input = inputs[0];
     const output = outputs[0][0];
@@ -66,7 +59,6 @@ class WhiteNoiseProcessor extends AudioWorkletProcessor {
     this.inputRingBuffer.push([...input]);
 
     if (this.inputRingBuffer.framesAvailable >= sampleBufferSize) {
-      debugger;
       this.inputRingBuffer.pull([this.samples.view]);
 
       this.bufferIndex = 0;
@@ -83,11 +75,10 @@ class WhiteNoiseProcessor extends AudioWorkletProcessor {
 
         const slice = HEAPU8.slice(this.frame, this.frame + read);
         const value = decode(slice.buffer);
-        console.log(value);
-        // this.port.postMessage({
-        //   type: 'payload',
-        //   value,
-        // }, [value]);
+        this.port.postMessage({
+          type: 'payload',
+          value,
+        });
       }
     }
 
@@ -101,4 +92,4 @@ class WhiteNoiseProcessor extends AudioWorkletProcessor {
   }
 }
 
-registerProcessor('white-noise-processor', WhiteNoiseProcessor);
+registerProcessor('quiet-processor-node', WhiteNoiseProcessor);

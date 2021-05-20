@@ -19,14 +19,16 @@ export default class Quiet {
   async init() {
     this.instance = (await WebAssembly.instantiate(this.quietWasmBytes, importObject)).instance;
 
-    await this.audioContext.audioWorklet.addModule(this.workletPath);
-    this.quietProcessorNode = new AudioWorkletNode(this.audioContext, 'quiet-processor-node', {
-      processorOptions: {
-        quietWasmBytes: this.quietWasmBytes,
-        profile: this.profile,
-        sampleRate: this.audioContext.sampleRate,
-      },
-    });
+    if (typeof window !== 'undefined') {
+      await this.audioContext.audioWorklet.addModule(this.workletPath);
+      this.quietProcessorNode = new AudioWorkletNode(this.audioContext, 'quiet-processor-node', {
+        processorOptions: {
+          quietWasmBytes: this.quietWasmBytes,
+          profile: this.profile,
+          sampleRate: this.audioContext.sampleRate,
+        },
+      });
+    }
 
     return this;
   }

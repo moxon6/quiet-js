@@ -1,11 +1,12 @@
+import Quiet from '@moxon6/quiet-js';
 import '@moxon6/quiet-js/node-polyfill.js';
-import quietjs from '@moxon6/quiet-js';
 import Speaker from 'speaker';
 import { readFile } from 'fs/promises';
 
-async function configureQuiet() {
+async function configureQuiet(quietProfiles) {
   const quietWasm = './node_modules/@moxon6/quiet-js/quiet.wasm';
-  const wasm = await readFile(quietWasm);
+  const quietWorklet = './node_modules/@moxon6/quiet-js/dist/quiet-worklet.js';
+  const quietWasmBytes = await readFile(quietWasm)
 
   const audioContext = new AudioContext();
 
@@ -15,10 +16,12 @@ async function configureQuiet() {
     sampleRate: audioContext.sampleRate,
   });
 
-  return quietjs(
+  return await new Quiet(
     audioContext,
-    wasm,
-  );
+    quietWasmBytes,
+    quietProfiles.audible,
+    quietWorklet,
+  ).init();
 }
 
 async function getProfiles() {
@@ -27,8 +30,8 @@ async function getProfiles() {
 }
 
 async function main() {
-  const quiet = await configureQuiet();
   const profiles = await getProfiles();
+  const quiet = await configureQuiet(profiles);
 
   setInterval(() => {
     quiet.transmit({

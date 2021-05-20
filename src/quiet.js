@@ -2,7 +2,7 @@ import Transmitter from './transmitter.js';
 import { encodeForTransmit, resumeIfSuspended } from './utils.js';
 import importObject from './importObject.js';
 
-const getUserAudio = async () => navigator.mediaDevices.getUserMedia({
+const getUserAudio = () => navigator.mediaDevices.getUserMedia({
   audio: {
     echoCancellation: false,
   },

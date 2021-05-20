@@ -39,14 +39,10 @@ async function main() {
   document
     .querySelector('#start-listening')
     .addEventListener('click', () => {
-      if (audioContext.state === 'suspended') {
-        audioContext.resume();
-      }
+      quiet.receive((data) => {
+        received.innerHTML += data.value;
+      });
     });
-
-  quiet.receive((data) => {
-    received.innerHTML += data.value;
-  });
 }
 
 main();

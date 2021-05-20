@@ -1,5 +1,5 @@
 import Transmitter from './transmitter.js';
-import { encode } from './utils.js';
+import { encode, resumeIfSuspended } from './utils.js';
 import importObject from './importObject.js';
 
 const getUserAudio = async () => navigator.mediaDevices.getUserMedia({
@@ -44,9 +44,9 @@ export default class Quiet {
     this.audioStream = await getUserAudio();
     const audioInput = this.audioContext.createMediaStreamSource(this.audioStream);
     audioInput
-      .connect(this.quietProcessorNode);
-    this.quietProcessorNode
+      .connect(this.quietProcessorNode)
       .port
       .onmessage = (e) => onReceive(e.data);
+    resumeIfSuspended(this.audioContext)
   }
 }

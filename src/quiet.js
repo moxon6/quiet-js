@@ -1,5 +1,5 @@
 import Transmitter from './transmitter.js';
-import { encode, resumeIfSuspended } from './utils.js';
+import { encodeForTransmit, resumeIfSuspended } from './utils.js';
 import importObject from './importObject.js';
 
 const getUserAudio = async () => navigator.mediaDevices.getUserMedia({
@@ -35,7 +35,7 @@ export default class Quiet {
     (
       await new Transmitter(this.audioContext, this.instance)
         .selectProfile(this.profile, clampFrame)
-        .transmit(encode(payload))
+        .transmit(encodeForTransmit(payload))
     )
       .destroy();
   }

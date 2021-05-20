@@ -42,7 +42,7 @@ class WhiteNoiseProcessor extends AudioWorkletProcessor {
 
   process(inputs, outputs) {
     if (!inputs[0].length) {
-      return false;
+      return true;
     }
     const input = inputs[0];
     const output = outputs[0][0];

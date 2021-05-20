@@ -9,15 +9,26 @@ const getUserAudio = async () => navigator.mediaDevices.getUserMedia({
 });
 
 export default class Quiet {
-  constructor(audioContext, instance, profile, workletPath, quietWasmPath) {
+  constructor(audioContext, quietWasmBytes, profile, workletPath) {
     this.audioContext = audioContext;
-    this.instance = instance;
-    this.workletPath = workletPath;
-    this.quietWasmPath = quietWasmPath;
-
-    this.quietWasmBinary = fetch(quietWasmPath);
-    this.importObject = importObject;
+    this.quietWasmBytes = quietWasmBytes;
     this.profile = profile;
+    this.workletPath = workletPath;
+  }
+
+  async init() {
+    this.instance = (await WebAssembly.instantiate(this.quietWasmBytes, importObject)).instance;
+
+    await this.audioContext.audioWorklet.addModule(this.workletPath);
+    this.quietProcessorNode = new AudioWorkletNode(this.audioContext, 'quiet-processor-node', {
+      processorOptions: {
+        quietWasmBytes: this.quietWasmBytes,
+        profile: this.profile,
+        sampleRate: this.audioContext.sampleRate,
+      },
+    });
+
+    return this;
   }
 
   async transmit({ payload, clampFrame }) {
@@ -30,23 +41,12 @@ export default class Quiet {
   }
 
   async receive(onReceive) {
-    const quietWasmResponse = await this.quietWasmBinary;
-    const bytes = await quietWasmResponse.arrayBuffer();
-
-    await this.audioContext.audioWorklet.addModule(this.workletPath);
-    const quietProcessorNode = new AudioWorkletNode(this.audioContext, 'quiet-processor-node', {
-      processorOptions: {
-        bytes,
-        profile: this.profile,
-        sampleRate: this.audioContext.sampleRate,
-
-      },
-    });
-
     this.audioStream = await getUserAudio();
     const audioInput = this.audioContext.createMediaStreamSource(this.audioStream);
     audioInput
-      .connect(quietProcessorNode);
-    quietProcessorNode.port.onmessage = (e) => onReceive(e.data);
+      .connect(this.quietProcessorNode);
+    this.quietProcessorNode
+      .port
+      .onmessage = (e) => onReceive(e.data);
   }
 }

@@ -2,18 +2,21 @@
 import quietWasm from 'url:../../quiet.wasm';
 import quietWorkletPath from 'url:../../dist/quiet-worklet.js';
 import quietProfiles from '../../quiet-profiles.json';
-import quietjs from '../../dist/index.js';
+import Quiet from '../../dist/index.js';
 
 const audioContext = new AudioContext();
 
 async function main() {
-  const quiet = await quietjs(
+
+  const quietWasmBytes = await fetch(quietWasm)
+    .then(res => res.arrayBuffer())
+
+  const quiet = await new Quiet(
     audioContext,
-    fetch(quietWasm),
+    quietWasmBytes,
     quietProfiles.audible,
     quietWorkletPath,
-    quietWasm,
-  );
+  ).init()
 
   function sendText(payload) {
     quiet.transmit({

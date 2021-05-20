@@ -2,34 +2,25 @@
 /* eslint-disable class-methods-use-this */
 import { allocateStringOnStack, mallocArray, decode } from './utils.js';
 import RingBuffer from './RingBuffer.js';
+import importObject from './importObject.js';
 
 const sampleBufferSize = 16384;
-
-const importObject = {
-  env: {
-    __sys_getpid: () => null,
-  },
-  wasi_snapshot_preview1: {
-    proc_exit: () => null,
-    clock_time_get: () => null,
-    fd_close: () => null,
-    fd_write: () => null,
-    fd_seek: () => null,
-    fd_read: () => null,
-  },
-};
 
 class WhiteNoiseProcessor extends AudioWorkletProcessor {
   constructor(options) {
     super();
-    const { bytes, profile, sampleRate } = options.processorOptions;
+    const { quietWasmBytes, profile, sampleRate } = options.processorOptions;
+    this.quietWasmBytes = quietWasmBytes;
+    this.profile = profile;
     this.sampleRate = sampleRate;
-    this.hasLoaded = WebAssembly.instantiate(bytes, importObject)
-      .then(({ instance }) => {
-        this.instance = instance;
-        this.selectProfile(instance, profile);
-      });
     this.inputRingBuffer = new RingBuffer(sampleBufferSize, 1);
+    this.init();
+  }
+
+  async init() {
+    this.instance = (await WebAssembly.instantiate(this.quietWasmBytes, importObject)).instance;
+    await this.selectProfile(this.instance, this.profile);
+    return this;
   }
 
   async selectProfile(instance, profile) {

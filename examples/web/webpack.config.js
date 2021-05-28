@@ -19,6 +19,7 @@ export default {
   output: {
     path: path.resolve('./dist'),
     filename: '[name].js',
+    publicPath: process.env.REPO_NAME || '/',
   },
   module: {
     rules: [
@@ -29,5 +30,4 @@ export default {
       },
     ],
   },
-
 };

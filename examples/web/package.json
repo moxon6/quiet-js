@@ -1,25 +1,20 @@
 {
   "name": "quiet-js-example-web",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Examples for Quiet.js in Web Environment",
   "type": "module",
   "author": "Martin Moxon",
   "license": "MIT",
   "scripts": {
-    "start": "parcel index.html",
-    "build": "parcel build index.html --public-url ./",
-    "build-webpack": "webpack"
+    "build": "webpack"
   },
   "dependencies": {
-    "@moxon6/quiet-js": "0.0.2-7",
-    "parcel": "^2.0.0-beta.3",
-    "parcel-plugin-static-files-copy": "^2.6.0",
-    "webpack": "^5.38.1"
+    "@moxon6/quiet-js": "0.0.2-7"
   },
   "devDependencies": {
-    "@parcel/transformer-sass": "^2.0.0-beta.3",
     "babel-loader": "^8.2.2",
     "copy-webpack-plugin": "^9.0.0",
+    "webpack": "^5.38.1",
     "webpack-cli": "^4.7.0"
   }
 }

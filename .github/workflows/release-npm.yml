@@ -7,7 +7,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-      
 
     - name: Fetch dependencies
       run: |
@@ -15,6 +14,11 @@ jobs:
         cp quiet/quiet-profiles.json .
         rm -rf quiet
         wget https://github.com/moxon6/quiet-wasm/releases/latest/download/quiet.wasm -O quiet.wasm
+
+    - name: Bundle packages
+      run: |
+        npm ci
+        npm run build
 
     - name: Publish to npm
       uses: JS-DevTools/npm-publish@v1

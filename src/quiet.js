@@ -1,3 +1,6 @@
+/* eslint-disable import/no-webpack-loader-syntax */
+// eslint-disable-next-line import/no-unresolved
+import quietWorkletUrl from './quiet.worklet.js';
 import Transmitter from './transmitter.js';
 import { encodeForTransmit, resumeIfSuspended } from './utils.js';
 import importObject from './importObject.js';
@@ -9,18 +12,21 @@ const getUserAudio = () => navigator.mediaDevices.getUserMedia({
 });
 
 export default class Quiet {
-  constructor(audioContext, quietWasmBytes, profile, workletPath) {
+  constructor(audioContext, profile) {
     this.audioContext = audioContext;
-    this.quietWasmBytes = quietWasmBytes;
     this.profile = profile;
-    this.workletPath = workletPath;
   }
 
   async init() {
+    this.quietWasmBytes = await fetch(new URL('../quiet.wasm', import.meta.url))
+      .then((res) => res.arrayBuffer());
+
     this.instance = (await WebAssembly.instantiate(this.quietWasmBytes, importObject)).instance;
 
     if (typeof window !== 'undefined') {
-      await this.audioContext.audioWorklet.addModule(this.workletPath);
+      const { audioWorklet } = this.audioContext;
+      await audioWorklet.addModule(new URL('./quiet.worklet.js', import.meta.url));
+
       this.quietProcessorNode = new AudioWorkletNode(this.audioContext, 'quiet-processor-node', {
         processorOptions: {
           quietWasmBytes: this.quietWasmBytes,
@@ -49,6 +55,6 @@ export default class Quiet {
       .connect(this.quietProcessorNode)
       .port
       .onmessage = (e) => onReceive(e.data);
-    resumeIfSuspended(this.audioContext)
+    resumeIfSuspended(this.audioContext);
   }
 }

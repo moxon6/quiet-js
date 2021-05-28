@@ -1,22 +1,13 @@
 /* eslint-disable import/no-unresolved */
-import quietWasm from 'url:../../quiet.wasm';
-import quietWorkletPath from 'url:../../dist/quiet-worklet.js';
-import quietProfiles from '../../quiet-profiles.json';
-import Quiet from '../../dist/index.js';
+import Quiet, { quietProfiles } from '@moxon6/quiet-js';
 
 const audioContext = new AudioContext();
 
 async function main() {
-
-  const quietWasmBytes = await fetch(quietWasm)
-    .then(res => res.arrayBuffer())
-
   const quiet = await new Quiet(
     audioContext,
-    quietWasmBytes,
     quietProfiles.audible,
-    quietWorkletPath,
-  ).init()
+  ).init();
 
   function sendText(payload) {
     quiet.transmit({

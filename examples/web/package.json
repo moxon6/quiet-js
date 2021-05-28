@@ -6,13 +6,13 @@
   "author": "Martin Moxon",
   "license": "MIT",
   "scripts": {
-    "build": "parcel build --public-url ./ index.html",
-    "start": "parcel index.html --no-cache"
+    "build": "webpack"
   },
   "dependencies": {
     "@moxon6/quiet-js": "^0.0.2-5",
     "parcel": "^2.0.0-beta.3",
-    "parcel-plugin-static-files-copy": "^2.6.0"
+    "parcel-plugin-static-files-copy": "^2.6.0",
+    "webpack": "^5.38.1"
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.0.0-beta.3"

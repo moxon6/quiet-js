@@ -9,7 +9,7 @@
     "build": "webpack"
   },
   "dependencies": {
-    "@moxon6/quiet-js": "^0.0.2-8"
+    "@moxon6/quiet-js": "^0.0.2-9"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",

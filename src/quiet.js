@@ -1,6 +1,3 @@
-/* eslint-disable import/no-webpack-loader-syntax */
-// eslint-disable-next-line import/no-unresolved
-import quietWorkletUrl from './quiet.worklet.js';
 import Transmitter from './transmitter.js';
 import { encodeForTransmit, resumeIfSuspended } from './utils.js';
 import importObject from './importObject.js';

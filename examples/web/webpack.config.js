@@ -6,18 +6,19 @@ const dirname = path.dirname(fileURLToPath(import.meta.url));
 export default {
   mode: 'production',
   optimization: {
-    minimize: false,
+    minimize: true,
   },
   entry: {
-    index: './src/index.js',
-    'quiet-worklet': './src/quiet-worklet.js',
+    index: path.resolve(dirname, 'index.js'),
   },
   output: {
     path: path.resolve(dirname, 'dist'),
     filename: '[name].js',
-    library: ['Quiet', '[name]'],
-    libraryTarget: 'umd',
-    globalObject: 'this',
+  },
+  resolve: {
+    alias: {
+      '@moxon6/quiet-js': path.resolve(dirname, '../../'),
+    },
   },
   module: {
     rules: [
@@ -28,4 +29,5 @@ export default {
       },
     ],
   },
+
 };

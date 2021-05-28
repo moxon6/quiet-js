@@ -1,4 +1,4 @@
-em++ \
+emcc \
     -I${HOME}/opt/include \
     -L${HOME}/opt/lib \
     -lquiet \

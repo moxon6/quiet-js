@@ -62,19 +62,31 @@ jobs:
     - name: "Build wasm for package"
       run: |
         emcc \
-          -O2 \
-          -I${HOME}/opt/include \
-          -L${HOME}/opt/lib \
-          -lquiet \
-          -lliquid \
-          -ljansson \
-          -lfec \
-          -o quiet.wasm \
-          --no-entry \
-          -s MODULARIZE=1 \
-          -s STRICT=1 \
-          -s EXPORTED_FUNCTIONS='["_free","_malloc","_quiet_encoder_clamp_frame_len","_quiet_encoder_create","_quiet_encoder_destroy","_quiet_encoder_emit","_quiet_encoder_get_frame_len","_quiet_encoder_profile_str","_quiet_encoder_send"]'
-
+            -I${HOME}/opt/include \
+            -L${HOME}/opt/lib \
+            -lquiet \
+            -lliquid \
+            -ljansson \
+            -lfec \
+            -o quiet.wasm \
+            --no-entry \
+            -s MODULARIZE=1 \
+            -s STRICT=1 \
+            -s EXPORTED_FUNCTIONS='[
+                "_free",
+                "_malloc",
+                "_quiet_encoder_clamp_frame_len",
+                "_quiet_encoder_create",
+                "_quiet_encoder_destroy",
+                "_quiet_encoder_emit",
+                "_quiet_encoder_get_frame_len",
+                "_quiet_encoder_profile_str",
+                "_quiet_encoder_send",
+                "_quiet_decoder_profile_str",
+                "_quiet_decoder_create",
+                "_quiet_decoder_consume",
+                "_quiet_decoder_recv"
+            ]'
         cp ${HOME}/opt/share/quiet/quiet-profiles.json quiet-js
 
     - name: Get Current Npm Version

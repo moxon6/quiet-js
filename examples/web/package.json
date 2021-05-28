@@ -1,6 +1,6 @@
 {
   "name": "quiet-js-example-web",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Examples for Quiet.js in Web Environment",
   "type": "module",
   "author": "Martin Moxon",

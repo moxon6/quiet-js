@@ -1,7 +1,4 @@
 import path from 'path';
-import { fileURLToPath } from 'url';
-
-const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default {
   mode: 'production',
@@ -9,16 +6,11 @@ export default {
     minimize: true,
   },
   entry: {
-    index: path.resolve(dirname, 'index.js'),
+    index: path.resolve('index.js'),
   },
   output: {
-    path: path.resolve(dirname, 'dist'),
+    path: path.resolve('./dist'),
     filename: '[name].js',
-  },
-  resolve: {
-    alias: {
-      '@moxon6/quiet-js': path.resolve(dirname, '../../'),
-    },
   },
   module: {
     rules: [

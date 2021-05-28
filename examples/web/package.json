@@ -12,6 +12,7 @@
     "@moxon6/quiet-js": "0.0.2-7"
   },
   "devDependencies": {
+    "@babel/core": "^7.14.3",
     "babel-loader": "^8.2.2",
     "copy-webpack-plugin": "^9.0.0",
     "webpack": "^5.38.1",

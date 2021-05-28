@@ -1,7 +1,15 @@
 import path from 'path';
+import CopyPlugin from 'copy-webpack-plugin';
 
 export default {
   mode: 'production',
+  plugins: [
+    new CopyPlugin({
+      patterns: [
+        'index.html',
+      ],
+    }),
+  ],
   optimization: {
     minimize: true,
   },

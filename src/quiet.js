@@ -24,7 +24,7 @@ export default class Quiet {
       const { audioWorklet } = this.audioContext;
       await audioWorklet.addModule(new URL('./quiet.worklet.js', import.meta.url));
 
-      this.quietProcessorNode = new AudioWorkletNode(this.audioContext, 'quiet-processor-node', {
+      this.quietProcessorNode = new AudioWorkletNode(this.audioContext, 'quiet-receiver-worklet', {
         processorOptions: {
           quietWasmBytes: this.quietWasmBytes,
           profile: this.profile,

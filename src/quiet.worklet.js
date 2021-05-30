@@ -6,7 +6,7 @@ import importObject from './importObject.js';
 
 const sampleBufferSize = 16384;
 
-class WhiteNoiseProcessor extends AudioWorkletProcessor {
+class ReceiverWorklet extends AudioWorkletProcessor {
   constructor(options) {
     super();
     const { quietWasmBytes, profile, sampleRate } = options.processorOptions;
@@ -33,10 +33,10 @@ class WhiteNoiseProcessor extends AudioWorkletProcessor {
     this.decoder = instance.exports.quiet_decoder_create(opt, this.sampleRate);
     instance.exports.free(opt);
 
-    instance.exports.stackRestore(stack);
     this.samples = mallocArray(sampleBufferSize, this.instance);
     this.frame = instance.exports.malloc(sampleBufferSize);
 
+    instance.exports.stackRestore(stack);
     return this;
   }
 
@@ -83,4 +83,4 @@ class WhiteNoiseProcessor extends AudioWorkletProcessor {
   }
 }
 
-registerProcessor('quiet-processor-node', WhiteNoiseProcessor);
+registerProcessor('quiet-receiver-worklet', ReceiverWorklet);

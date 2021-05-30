@@ -9,8 +9,8 @@ const sampleBufferSize = 16384;
 class ReceiverWorklet extends AudioWorkletProcessor {
   constructor(options) {
     super();
-    const { quietWasmBytes, profile, sampleRate } = options.processorOptions;
-    this.quietWasmBytes = quietWasmBytes;
+    const { quietModule, profile, sampleRate } = options.processorOptions;
+    this.quietModule = quietModule;
     this.profile = profile;
     this.sampleRate = sampleRate;
     this.inputRingBuffer = new RingBuffer(sampleBufferSize, 1);
@@ -18,7 +18,7 @@ class ReceiverWorklet extends AudioWorkletProcessor {
   }
 
   async init() {
-    this.instance = (await WebAssembly.instantiate(this.quietWasmBytes, importObject)).instance;
+    this.instance = await WebAssembly.instantiate(this.quietModule, importObject);
     await this.selectProfile(this.instance, this.profile);
     return this;
   }

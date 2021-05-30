@@ -15,10 +15,12 @@ export default class Quiet {
   }
 
   async init() {
-    this.quietWasmBytes = await fetch(new URL('../quiet.wasm', import.meta.url))
-      .then((res) => res.arrayBuffer());
+    const { module, instance } = await WebAssembly.instantiateStreaming(
+      fetch(new URL('../quiet.wasm', import.meta.url)),
+      importObject,
+    );
 
-    this.instance = (await WebAssembly.instantiate(this.quietWasmBytes, importObject)).instance;
+    this.instance = instance;
 
     if (typeof window !== 'undefined') {
       const { audioWorklet } = this.audioContext;
@@ -26,7 +28,7 @@ export default class Quiet {
 
       this.quietProcessorNode = new AudioWorkletNode(this.audioContext, 'quiet-receiver-worklet', {
         processorOptions: {
-          quietWasmBytes: this.quietWasmBytes,
+          quietModule: module,
           profile: this.profile,
           sampleRate: this.audioContext.sampleRate,
         },

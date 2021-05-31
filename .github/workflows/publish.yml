@@ -48,8 +48,10 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Install main package npm dependencies
+    - name: Install all npm dependencies
       run: |
+        npm ci
+        cd examples/web
         npm ci
 
     - name: Lint demo

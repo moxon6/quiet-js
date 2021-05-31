@@ -2,7 +2,7 @@ name: Release NPM
 on:
   workflow_dispatch:
 jobs:
-  build:
+  build_and_publish:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -25,3 +25,22 @@ jobs:
       with:
         token: ${{ secrets.NPM_TOKEN }}
       package: dist/package.json
+  
+  deploy_latest_github_pages:
+    needs:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      
+    - name: Build Demo Site
+      run: |
+        cd examples/web
+        npm ci
+        npm run build
+
+    - name: Deploy
+      uses: JamesIves/github-pages-deploy-action@4.1.1
+      with:
+        branch: gh-pages
+        folder: examples/web/dist

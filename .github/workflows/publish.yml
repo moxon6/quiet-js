@@ -16,7 +16,11 @@ jobs:
         cp quiet/quiet-profiles.json .
         rm -rf quiet
         wget https://github.com/moxon6/quiet-wasm/releases/latest/download/quiet.wasm -O quiet.wasm
-      
+
+    - name: Install npm dependencies
+      run: |
+        npm ci
+
     - name: lint
       run: |
         npm run lint
@@ -29,7 +33,6 @@ jobs:
 
     - name: Bundle packages
       run: |
-        npm ci
         npm run build
 
     - name: Publish to npm

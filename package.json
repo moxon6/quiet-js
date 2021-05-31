@@ -1,6 +1,6 @@
 {
   "name": "@moxon6/quiet-js",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Emscripten build of quiet.js",
   "scripts": {
     "lint": "eslint src/*.js examples/**/*.js",

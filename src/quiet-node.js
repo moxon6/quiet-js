@@ -1,7 +1,7 @@
 import fs from 'fs';
 import importObject from './importObject';
 import createQuiet from './quiet';
-import './node-polyfill';
+import { copyToChannel } from './node-polyfill';
 
 async function instantiateNode() {
   const module = await WebAssembly.compile(fs.readFileSync(new URL('../quiet.wasm', import.meta.url)));
@@ -9,4 +9,7 @@ async function instantiateNode() {
   return { module, instance };
 }
 
-export default createQuiet(instantiateNode);
+export default createQuiet({
+  instantiateNode,
+  copyToChannel: (...args) => copyToChannel.apply(this, args),
+});

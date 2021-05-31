@@ -21,6 +21,7 @@ export default [
         targets: [
           { src: 'package*.json', dest: 'dist' },
           { src: 'quiet.wasm', dest: 'dist' },
+          { src: 'README.md', dest: 'dist' },
         ],
       }),
     ],

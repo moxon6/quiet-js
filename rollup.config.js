@@ -20,6 +20,7 @@ export default [
       copy({
         targets: [
           { src: 'package*.json', dest: 'dist' },
+          { src: 'quiet.wasm', dest: 'dist' },
         ],
       }),
     ],

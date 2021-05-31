@@ -1,4 +1,4 @@
-import Quiet from '@moxon6/quiet-js/web';
+import Quiet from '@moxon6/quiet-js';
 import quietProfiles from '@moxon6/quiet-js/profiles';
 
 const audioContext = new AudioContext();

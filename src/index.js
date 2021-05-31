@@ -16,7 +16,7 @@ export default class Quiet {
 
   async init() {
     const { module, instance } = await WebAssembly.instantiateStreaming(
-      fetch(new URL('../quiet.wasm', import.meta.url)),
+      fetch(new URL('./quiet.wasm', import.meta.url)),
       importObject,
     );
 

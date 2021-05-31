@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable class-methods-use-this */
-import { allocateStringOnStack, mallocArray, decode } from './utils.js';
-import RingBuffer from './RingBuffer.js';
-import importObject from './importObject.js';
+import { allocateStringOnStack, mallocArray, decode } from './utils';
+import RingBuffer from './RingBuffer';
+import importObject from './importObject';
 
 const sampleBufferSize = 16384;
 

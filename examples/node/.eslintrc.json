@@ -1,0 +1,6 @@
+{
+    "rules": {
+        "import/extensions": [2, "always"]
+
+    }
+}

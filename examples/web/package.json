@@ -2,14 +2,14 @@
   "name": "quiet-js-example-web",
   "version": "2.0.1",
   "description": "Examples for Quiet.js in Web Environment",
-  "type": "module",
   "author": "Martin Moxon",
   "license": "MIT",
   "scripts": {
     "build": "webpack"
   },
   "dependencies": {
-    "@moxon6/quiet-js": "^0.0.2-9"
+    "@moxon6/quiet-js": "file:../../dist",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",

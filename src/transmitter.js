@@ -4,7 +4,7 @@ import {
   allocateArrayOnStack,
   allocateStringOnStack,
   mallocArray,
-} from './utils.js';
+} from './utils';
 
 const sampleBufferSize = 16384;
 

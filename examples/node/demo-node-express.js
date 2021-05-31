@@ -1,35 +1,24 @@
-import '@moxon6/quiet-js/node-polyfill.js';
-import quietjs from '@moxon6/quiet-js';
+import Quiet, { quietProfiles } from '@moxon6/quiet-js';
 import Speaker from 'speaker';
-import { readFile } from 'fs/promises';
+import '@moxon6/quiet-js/node-polyfill';
 import express from 'express';
 
 async function configureQuiet() {
-  const quietWasm = './node_modules/@moxon6/quiet-js/quiet.wasm';
-  const wasm = await readFile(quietWasm);
-
   const audioContext = new AudioContext();
-
   audioContext.outStream = new Speaker({
     channels: audioContext.format.numberOfChannels,
     bitDepth: audioContext.format.bitDepth,
     sampleRate: audioContext.sampleRate,
   });
 
-  return quietjs(
+  return new Quiet(
     audioContext,
-    wasm,
-  );
-}
-
-async function getProfiles() {
-  const quietProfilesString = await readFile('node_modules/@moxon6/quiet-js/quiet-profiles.json');
-  return JSON.parse(quietProfilesString);
+    quietProfiles.audible,
+  ).init();
 }
 
 async function main() {
   const quiet = await configureQuiet();
-  const profiles = await getProfiles();
 
   const app = express();
 
@@ -41,7 +30,7 @@ async function main() {
     // eslint-disable-next-line no-console
     console.log(`Encoding: "${payload}"`);
     quiet.transmit({
-      profile: profiles.audible,
+      profile: quietProfiles.audible,
       clampFrame: false,
       payload,
     });

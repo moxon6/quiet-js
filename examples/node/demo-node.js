@@ -1,6 +1,7 @@
-import Quiet, { quietProfiles } from '@moxon6/quiet-js';
+import Quiet from '@moxon6/quiet-js/node.js';
+import quietProfiles from '@moxon6/quiet-js/profiles.js';
+
 import Speaker from 'speaker';
-import '@moxon6/quiet-js/dist/node-polyfill.js';
 
 async function configureQuiet() {
   const audioContext = new AudioContext();
@@ -19,13 +20,13 @@ async function configureQuiet() {
 async function main() {
   const quiet = await configureQuiet();
 
-  setTimeout(() => {
-    quiet.transmit({
-      profile: quietProfiles.audible,
-      clampFrame: false,
-      payload: 'This is an example \n',
-    });
-  }, 2000);
+  await quiet.transmit({
+    profile: quietProfiles.audible,
+    clampFrame: false,
+    payload: 'This is an example \n',
+  });
+
+  process.exit();
 }
 
 main();

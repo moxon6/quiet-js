@@ -1,23 +1,39 @@
 import json from '@rollup/plugin-json';
+import copy from 'rollup-plugin-copy';
 
 export default [
   {
-    input: 'src/index.js',
+    input: 'src/quiet-web.js',
     output: {
-      file: 'dist/index.js',
+      file: 'dist/web.js',
       format: 'module',
     },
-    plugins: [json()],
+  },
+  {
+    input: 'src/quiet-node.js',
+    output: {
+      file: 'dist/node.js',
+      format: 'module',
+    },
+  },
+  {
+    input: 'quiet-profiles.json',
+    output: {
+      file: 'dist/profiles.js',
+      format: 'module',
+    },
+    plugins: [
+      json(),
+      copy({
+        targets: [
+          { src: 'package*.json', dest: 'dist' },
+        ],
+      }),
+    ],
   }, {
     input: 'src/quiet.worklet.js',
     output: {
       file: 'dist/quiet.worklet.js',
-      format: 'module',
-    },
-  }, {
-    input: 'src/node-polyfill.js',
-    output: {
-      file: 'dist/node-polyfill.js',
       format: 'module',
     },
   },

@@ -1,5 +1,5 @@
-/* eslint-disable import/no-unresolved */
-import Quiet, { quietProfiles } from '@moxon6/quiet-js';
+import Quiet from '@moxon6/quiet-js/web';
+import quietProfiles from '@moxon6/quiet-js/profiles';
 
 const audioContext = new AudioContext();
 

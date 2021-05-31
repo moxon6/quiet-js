@@ -40,12 +40,11 @@ class ReceiverWorklet extends AudioWorkletProcessor {
     return this;
   }
 
-  process(inputs, outputs) {
+  process(inputs) {
     if (!inputs[0].length) {
       return true;
     }
     const input = inputs[0];
-    const output = outputs[0][0];
 
     this.inputRingBuffer.push([...input]);
 
@@ -72,12 +71,6 @@ class ReceiverWorklet extends AudioWorkletProcessor {
         });
       }
     }
-
-    output.forEach((channel) => {
-      for (let i = 0; i < channel.length; i += 1) {
-        channel[i] = 1;
-      }
-    });
 
     return true;
   }

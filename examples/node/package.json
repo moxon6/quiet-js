@@ -10,5 +10,8 @@
     "express": "^4.17.1",
     "speaker": "^0.5.3",
     "web-audio-api": "^0.2.2"
+  },
+  "scripts": {
+    "start": "node --experimental-wasm-bigint demo-node.js"
   }
 }

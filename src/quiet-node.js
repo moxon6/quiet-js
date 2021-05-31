@@ -10,6 +10,6 @@ async function instantiateNode() {
 }
 
 export default createQuiet({
-  instantiateNode,
-  copyToChannel: (...args) => copyToChannel.apply(this, args),
+  instantiate: instantiateNode,
+  copyToChannel: (audioBuffer, ...args) => copyToChannel.apply(audioBuffer, args),
 });

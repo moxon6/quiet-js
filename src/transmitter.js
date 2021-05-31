@@ -64,7 +64,7 @@ export default class Transmitter {
         this.samples.view[i] = 0;
       }
 
-      audioBuffer.copyToChannel(this.samples.view, 0, 0);
+      this.copyToChannel(audioBuffer, this.samples.view, 0, 0);
 
       const audioBufferNode = new AudioBufferSourceNode(this.audioContext);
       audioBufferNode.buffer = audioBuffer;

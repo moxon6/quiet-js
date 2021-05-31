@@ -9,4 +9,7 @@ async function instantiateWeb() {
   return { module, instance };
 }
 
-export default createQuiet(instantiateWeb);
+export default createQuiet({
+  instantiate: instantiateWeb,
+  copyToChannel: (audioBuffer, ...args) => audioBuffer.copyToChannel(...args),
+});

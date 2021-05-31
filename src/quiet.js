@@ -7,7 +7,7 @@ const getUserAudio = () => navigator.mediaDevices.getUserMedia({
   },
 });
 
-export default function createQuiet(instantiateQuiet) {
+export default function createQuiet({ instantiate, copyToChannel }) {
   return class Quiet {
     constructor(audioContext, profile) {
       this.audioContext = audioContext;
@@ -15,7 +15,7 @@ export default function createQuiet(instantiateQuiet) {
     }
 
     async init() {
-      const { module, instance } = await instantiateQuiet();
+      const { module, instance } = await instantiate();
       this.instance = instance;
 
       if (typeof window !== 'undefined') {
@@ -36,7 +36,7 @@ export default function createQuiet(instantiateQuiet) {
 
     async transmit({ payload, clampFrame }) {
       (
-        await new Transmitter(this.audioContext, this.instance)
+        await new Transmitter(this.audioContext, this.instance, copyToChannel)
           .selectProfile(this.profile, clampFrame)
           .transmit(encodeForTransmit(payload))
       )

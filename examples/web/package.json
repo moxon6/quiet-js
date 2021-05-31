@@ -7,8 +7,7 @@
   "scripts": {
     "start": "webpack serve",
     "build:dev": "webpack -c webpack.dev.config.js",
-    "build": "webpack",
-    "lint": "eslint *.js"
+    "build": "webpack"
   },
   "dependencies": {
     "@moxon6/quiet-js": "0.0.3",

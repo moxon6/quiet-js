@@ -20,6 +20,7 @@ jobs:
     - name: Install npm dependencies
       run: |
         npm ci
+        npm ci --prefix examples/web
 
     - name: lint
       run: |
@@ -50,27 +51,17 @@ jobs:
 
     - name: Install all npm dependencies
       run: |
-        npm ci
-        cd examples/web
-        npm ci
-
-    - name: Lint demo
-      run: |
-        cd examples/web
-        npm run lint
 
     - name: Install latest quiet-js version
       run: |
-        cd examples/web
-        npm install --save @moxon6/quiet-js@latest
+        npm install --save @moxon6/quiet-js@latest --prefix examples/web
       
     - name: Commit Changes back to repo
       uses: EndBug/add-and-commit@v7.2.1
 
     - name: Build Demo Site
       run: |
-        cd examples/web
-        npm run build
+        npm run build --prefix examples/web
 
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@4.1.1

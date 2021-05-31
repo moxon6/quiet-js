@@ -16,6 +16,10 @@ jobs:
         cp quiet/quiet-profiles.json .
         rm -rf quiet
         wget https://github.com/moxon6/quiet-wasm/releases/latest/download/quiet.wasm -O quiet.wasm
+      
+    - name: lint
+      run: |
+        npm run lint
 
     - name: 'Automated Version Bump'
       id: 'version-bump'

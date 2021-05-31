@@ -32,7 +32,7 @@ jobs:
       uses: JS-DevTools/npm-publish@v1
       with:
         token: ${{ secrets.NPM_TOKEN }}
-      package: dist/package.json
+        package: dist/package.json
   
   deploy_latest_github_pages:
     needs:

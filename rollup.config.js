@@ -14,5 +14,11 @@ export default [
       file: 'dist/quiet.worklet.js',
       format: 'module',
     },
+  }, {
+    input: 'src/node-polyfill.js',
+    output: {
+      file: 'dist/node-polyfill.js',
+      format: 'module',
+    },
   },
 ];

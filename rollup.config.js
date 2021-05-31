@@ -3,16 +3,9 @@ import copy from 'rollup-plugin-copy';
 
 export default [
   {
-    input: 'src/quiet-web.js',
+    input: 'src/index.js',
     output: {
-      file: 'dist/web.js',
-      format: 'module',
-    },
-  },
-  {
-    input: 'src/quiet-node.js',
-    output: {
-      file: 'dist/node.js',
+      file: 'dist/index.js',
       format: 'module',
     },
   },

@@ -11,11 +11,10 @@ const sampleBufferSize = 16384;
 const waitUntil = (seconds) => new Promise((resolve) => setTimeout(resolve, seconds * 1000));
 
 export default class Transmitter {
-  constructor(audioContext, instance, copyToChannel) {
+  constructor(audioContext, instance) {
     this.destroyed = false;
     this.audioContext = audioContext;
     this.instance = instance;
-    this.copyToChannel = copyToChannel;
   }
 
   selectProfile(profile, clampFrame) {
@@ -64,7 +63,7 @@ export default class Transmitter {
         this.samples.view[i] = 0;
       }
 
-      this.copyToChannel(audioBuffer, this.samples.view, 0, 0);
+      audioBuffer.copyToChannel(this.samples.view, 0, 0);
 
       const audioBufferNode = new AudioBufferSourceNode(this.audioContext);
       audioBufferNode.buffer = audioBuffer;

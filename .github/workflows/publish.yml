@@ -42,7 +42,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Install latest quiet-js version
-    - run: |
+      run: |
         cd examples/web
         npm install --save @moxon6/quiet-js@latest
       

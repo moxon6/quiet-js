@@ -15,6 +15,12 @@ jobs:
         rm -rf quiet
         wget https://github.com/moxon6/quiet-wasm/releases/latest/download/quiet.wasm -O quiet.wasm
 
+    - name: 'Automated Version Bump'
+      id: 'version-bump'
+      uses: 'phips28/gh-action-bump-version@master'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Bundle packages
       run: |
         npm ci

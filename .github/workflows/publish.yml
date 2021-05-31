@@ -48,6 +48,16 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
+    - name: Install demo npm dependencies
+      run: |
+        cd examples/web
+        npm ci
+
+    - name: Lint demo
+      run: |
+        cd examples/web
+        npm run lint
+
     - name: Install latest quiet-js version
       run: |
         cd examples/web
@@ -59,7 +69,6 @@ jobs:
     - name: Build Demo Site
       run: |
         cd examples/web
-        npm ci
         npm run build
 
     - name: Deploy

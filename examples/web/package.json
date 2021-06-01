@@ -10,7 +10,7 @@
     "build": "webpack"
   },
   "dependencies": {
-    "@moxon6/quiet-js": "0.0.7",
+    "@moxon6/quiet-js": "0.0.8",
     "lodash": "^4.17.21"
   },
   "devDependencies": {

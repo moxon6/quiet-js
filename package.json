@@ -2,6 +2,10 @@
   "name": "@moxon6/quiet-js",
   "version": "0.0.7",
   "description": "Emscripten build of quiet.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moxon6/quiet-js.git"
+  },
   "scripts": {
     "lint": "eslint src/*.js examples/web/*.js",
     "build": "rollup -c rollup.config.js"

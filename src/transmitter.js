@@ -23,10 +23,17 @@ export default class Transmitter {
     const cProfiles = allocateStringOnStack(this.instance, JSON.stringify({ profile }));
     const cProfile = allocateStringOnStack(this.instance, 'profile');
 
-    const opt = this.instance.exports.quiet_encoder_profile_str(cProfiles, cProfile);
+    const quietEncoderOptions = this
+      .instance
+      .exports
+      .quiet_encoder_profile_str(cProfiles, cProfile);
 
-    this.encoder = this.instance.exports.quiet_encoder_create(opt, this.audioContext.sampleRate);
-    this.instance.exports.free(opt);
+    this.encoder = this
+      .instance
+      .exports
+      .quiet_encoder_create(quietEncoderOptions, this.audioContext.sampleRate);
+
+    this.instance.exports.free(quietEncoderOptions);
 
     this.frameLength = clampFrame
       ? this.instance.exports.quiet_encoder_clamp_frame_len(this.encoder, sampleBufferSize)
@@ -47,10 +54,6 @@ export default class Transmitter {
 
     let t = this.audioContext.currentTime;
     for (const frame of payload) {
-      const audioBuffer = this
-        .audioContext
-        .createBuffer(1, sampleBufferSize, this.audioContext.sampleRate);
-
       const framePointer = allocateArrayOnStack(this.instance, new Uint8Array(frame));
       this.instance.exports.quiet_encoder_send(this.encoder, framePointer, frame.byteLength);
       const written = this.instance.exports.quiet_encoder_emit(
@@ -59,11 +62,15 @@ export default class Transmitter {
         sampleBufferSize,
       );
 
+      const audioBuffer = this
+        .audioContext
+        .createBuffer(1, written, this.audioContext.sampleRate);
+
       for (let i = written; i < sampleBufferSize; i += 1) {
         this.samples.view[i] = 0;
       }
 
-      audioBuffer.copyToChannel(this.samples.view, 0, 0);
+      audioBuffer.copyToChannel(this.samples.view.slice(0, written), 0, 0);
 
       const audioBufferNode = new AudioBufferSourceNode(this.audioContext);
       audioBufferNode.buffer = audioBuffer;
